@@ -1,0 +1,54 @@
+@font-face {
+  font-family: "BYekan"; /*تعریف یک نام برای فونت*/
+  src: url("fonts/Yekan.eot"); /*اکسپلورر ۹ به بعد*/
+  src: local("bYekan"), /*بررسی نصب بودن فونت در سیستم کاربر*/ local("b Yekan"),
+    /*برای برخی از مرورگرها مانند سافاری*/ url("fonts/Yekan.eot?#iefix") format("embedded-opentype"),
+    /*هک برای اکسپلورر ۸ و ماقبل*/ url("fonts/Yekan.woff") format("woff"),
+    /*مرورگر های جدید*/ url("fonts/Yekan.ttf") format("truetype"),
+    /*تمام مرورگرها به جزء اکسپلورر*/ url("fonts/Yekan.svg") format("svg"); /*نسخه های قدیمی سیستم عامل iOS*/
+  font-style: normal;
+  font-weight: normal;
+}
+
+.my-persian,
+* {
+  direction: rtl;
+  unicode-bidi: isolate;
+  font-family: "BYekan", sans-serif;
+}
+
+.ui.icon.circular.button {
+  padding: 0 0 0 0;
+  background-color: transparent;
+}
+
+td > img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ui.menu.nav-menu {
+  border-radius: 0;
+  background-color: #005e5e;
+}
+
+.logo {
+  height: 2rem;
+  width: auto;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.ui.dropdown .right.menu>.item {
+  text-align: right;
+}
+
+.ui.selection.dropdown.right {
+  text-align: right;
+}
