@@ -1,0 +1,30 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  projects: './Prototype/OODProjectReact.sln'
+
+steps:
+- script: dotnet build --configuration $(buildConfiguration) $(projects)
+  displayName: 'dotnet build $(buildConfiguration) $(projects)'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: './Prototype/OODProjectReact/ClientApp'
+    customCommand: 'install'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: './Prototype/OODProjectReact/ClientApp'
+    customCommand: 'run build'
