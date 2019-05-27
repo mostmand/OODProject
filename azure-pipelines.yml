@@ -15,16 +15,23 @@ variables:
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration) $(projects)
-  displayName: 'dotnet build $(buildConfiguration) $(projects)'
+  displayName: 'Build $(projects)'
 
 - task: Npm@1
   inputs:
     command: 'custom'
     workingDir: './Prototype/OODProjectReact/ClientApp'
     customCommand: 'install'
+  displayName: 'npm install'
 
 - task: Npm@1
   inputs:
     command: 'custom'
     workingDir: './Prototype/OODProjectReact/ClientApp'
     customCommand: 'run build'
+  displayName: 'npm run build'
+
+- task: Docker@2
+  inputs:
+    command: 'build'
+    Dockerfile: '**/DockerFile'
