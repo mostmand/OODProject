@@ -11,13 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  projects: './Prototype/OODProjectReact.sln'
 
 steps:
-
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'build'
-#     projects: './Prototype/OODProjectReact.sln'
-    
-- script: dotnet build --configuration $(buildConfiguration) ./Prototype/OODProjectReact.sln
-  displayName: 'dotnet build $(buildConfiguration) ./Prototype/OODProjectReact.sln'
+- script: dotnet build --configuration $(buildConfiguration) $(projects)
+  displayName: 'dotnet build $(buildConfiguration) $(projects)'
