@@ -14,10 +14,10 @@ variables:
 
 steps:
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: './Prototype/OODProjectReact.sln'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'build'
+#     projects: './Prototype/OODProjectReact.sln'
     
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+- script: dotnet build --configuration $(buildConfiguration) ./Prototype/OODProjectReact.sln
+  displayName: 'dotnet build $(buildConfiguration) ./Prototype/OODProjectReact.sln'
