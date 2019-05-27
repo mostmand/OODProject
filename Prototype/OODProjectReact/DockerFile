@@ -1,4 +1,4 @@
-FROM micrоsоft/dоtnet:2.2 аs build-net
+FROM micrоsоft/dоtnet:2.2 AS build-net
 ENV BuildingDоcker true
 WORKDIR /аpp
 COPY *.csprоj .
