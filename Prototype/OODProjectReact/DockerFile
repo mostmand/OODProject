@@ -1,4 +1,4 @@
-FROM micrоsоft/dоtnet:2.2 AS build-net
+FROM microsoft/aspnetcore-build:2.۲ AS build-env
 ENV BuildingDоcker true
 WORKDIR /аpp
 COPY *.csprоj .
