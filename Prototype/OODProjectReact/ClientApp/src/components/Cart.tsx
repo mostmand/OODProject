@@ -21,7 +21,7 @@ export class Cart extends Component<{}, ILocalState> {
             id: productId,
             description: 'توضیحات',
             image: 'Temp/152408.jpg',
-            price: '۸۲ هزار تومان',
+            price: '82000 تومان',
             title: 'کالای تست'
         }
     }
@@ -29,7 +29,7 @@ export class Cart extends Component<{}, ILocalState> {
     getCart(): { [id: string]: IProductItem; } {
         const storedCart = CartUtil.getCart();
 
-        const cart: {[id: string]: IProductItem;} = {};
+        const cart: { [id: string]: IProductItem; } = {};
         for (const [productId, quantity] of Object.entries(storedCart)) {
             const product = this.getProductInfo(productId);
             cart[productId] = { product: product, quantity: quantity };
@@ -80,10 +80,10 @@ export class Cart extends Component<{}, ILocalState> {
         });
     }
 
-    handleInvoiceTypeChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
+    handleInvoiceTypeChange = (isSaleInvoice: boolean) => {
         this.setState({
             products: this.state.products,
-            isSaleInvoice: data.checked!
+            isSaleInvoice: isSaleInvoice
         });
     };
 
@@ -141,23 +141,15 @@ export class Cart extends Component<{}, ILocalState> {
                         </Header>
                     </Grid.Column>
                     <Grid.Column width={5}>
-                        <Grid>
-                            <Grid.Row>
-                                <Grid.Column width={6}>
-                                    <Label color="teal" pointing="left">فاکتور فروش</Label>
-                                </Grid.Column>
-                                <Grid.Column width={4}>
-                                    <Radio toggle checked={this.state.isSaleInvoice} onChange={this.handleInvoiceTypeChange} />
-                                </Grid.Column>
-                                <Grid.Column width={6}>
-                                    <Label color="violet" pointing="right">فاکتور خرید</Label>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
+                        <Button.Group>
+                            <Button color="teal" active={this.state.isSaleInvoice} onClick={() => this.handleInvoiceTypeChange(true)}>فاکتور فروش</Button>
+                            <Button.Or text="یا" />
+                            <Button color="teal" active={!this.state.isSaleInvoice} onClick={() => this.handleInvoiceTypeChange(false)}>فاکتور خرید</Button>
+                        </Button.Group>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Table textAlign="center">
+                    <Table color="teal" textAlign="center">
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>نام کالا</Table.HeaderCell>
@@ -172,7 +164,7 @@ export class Cart extends Component<{}, ILocalState> {
                         </Table.Body>
                     </Table>
                 </Grid.Row>
-            </Grid>
+            </Grid >
         );
     }
 

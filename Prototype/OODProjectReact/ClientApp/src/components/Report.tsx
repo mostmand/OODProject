@@ -32,7 +32,7 @@ export class Report extends Component<{}, {}>{
 
     render() {
         return (
-            <Segment>
+            <Segment color="teal">
                 <Header>
                     گزارش‌گیری
                 </Header>
@@ -45,7 +45,6 @@ export class Report extends Component<{}, {}>{
                     direction="right"
                     className="right"
                 />
-
 
                 <Grid columns={2}>
                     <Grid.Column>
