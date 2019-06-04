@@ -1,7 +1,7 @@
 import React from "react";
 import { FetchUtil } from "./utilities/FetchUtil";
 import { CookieUtil } from "./utilities/CookieUtil";
-import { Container, Header, Message, Form, Label, Button, Input, Segment, Grid } from "semantic-ui-react";
+import { Container, Header, Message, Form, Label, Button, Input, Segment, Grid, InputOnChangeData } from "semantic-ui-react";
 
 interface IProps {
     loggedIn: boolean;
@@ -9,44 +9,55 @@ interface IProps {
 
 interface ILocalState {
     loginFailed: boolean;
+    username: string;
+    password: string;
 }
 
 export default class LoginPage extends React.Component<IProps, ILocalState>{
-    userName: React.RefObject<any>;
-    password: React.RefObject<any>;
-    signInButton: React.RefObject<any>;
-
+    passwordChanged = (event: any, data: InputOnChangeData) => {
+        var state: ILocalState = Object.assign(this.state);
+        state.password = data.value;
+        this.setState(state);
+    };
+    usernameChanged = (event: any, data: InputOnChangeData) => {
+        var state: ILocalState = Object.assign(this.state);
+        state.username = data.value;
+        this.setState(state);
+    };
     constructor(props: IProps) {
         super(props);
-        this.userName = React.createRef();
-        this.password = React.createRef();
-        this.signInButton = React.createRef();
         this.state = {
-            loginFailed: false
+            loginFailed: false,
+            username: '',
+            password: ''
         }
     }
 
-    submit = () => {
-        if (this.userName.current === null || this.password.current === null) {
-            throw 'Username or password is undefined';
-        }
-        const url = '/api/accounts/login/';
+    submit = async () => {
+        const url = '/api/login/';
         const body = {
-            'username': this.userName.current.value,
-            'password': this.password.current.value
+            'username': this.state.username,
+            'password': this.state.password
         };
 
-        FetchUtil.postToUrl(url, body)
-            .then(response => {
-                CookieUtil.setCookie('logintoken', response.token, 10);
+        try {
+            var response = await FetchUtil.postToUrl(url, body);
+            if (response != null) {
+                CookieUtil.setCookie('logintoken', response, 10);
                 window.location.replace('/');
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    loginFailed: true
-                });
+            }
+            else {
+                var state: ILocalState = Object.assign(this.state);
+                state.loginFailed = true;
+                this.setState(state);
+            }
+        }
+        catch (err) {
+            console.log(err);
+            this.setState({
+                loginFailed: true
             });
+        }
     };
 
     render() {
@@ -71,7 +82,7 @@ export default class LoginPage extends React.Component<IProps, ILocalState>{
                                         <Grid.Column textAlign="right">
                                             <Form.Field>
                                                 <Label basic color="teal" htmlFor="username">نام کاربری</Label>
-                                                <Input fluid type="text" id="username" ref={this.userName} onKeyUp={this.handleEnter} />
+                                                <Input fluid type="text" id="username" onChange={this.usernameChanged} onKeyUp={this.handleEnter} />
                                             </Form.Field>
                                         </Grid.Column>
                                     </Grid.Row>
@@ -79,13 +90,13 @@ export default class LoginPage extends React.Component<IProps, ILocalState>{
                                         <Grid.Column textAlign="right">
                                             <Form.Field>
                                                 <Label basic color="teal" htmlFor="password">رمز عبور</Label>
-                                                <Input fluid type="password" id="password" ref={this.password} onKeyUp={this.handleEnter} />
+                                                <Input fluid type="password" id="password" onChange={this.passwordChanged} onKeyUp={this.handleEnter} />
                                             </Form.Field>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row columns={1} centered>
                                         <Grid.Column>
-                                            <Button fluid color="teal" className="no-margin-btn" ref={this.signInButton} onClick={this.submit}>ورود</Button>
+                                            <Button fluid color="teal" className="no-margin-btn" onClick={this.submit}>ورود</Button>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
@@ -100,7 +111,7 @@ export default class LoginPage extends React.Component<IProps, ILocalState>{
     handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (event.keyCode === 13) {
-            this.signInButton.current.click();
+            this.submit();
         }
     };
 }

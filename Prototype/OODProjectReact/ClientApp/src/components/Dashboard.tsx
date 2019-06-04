@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import { Grid, Segment, Label, Image, Button, Divider } from "semantic-ui-react";
-import { UserInfo } from "./UserInfo";
-import { History } from "history";
+import { Link } from "react-router-dom";
 
-interface IProps{
-    history: History;
-}
-
-export class Dashboard extends Component<IProps, {}>{
+export class Dashboard extends Component<{}, {}>{
     render() {
         return (
             <Grid columns={2}>
@@ -44,9 +39,7 @@ export class Dashboard extends Component<IProps, {}>{
                         </Label>
                         <Grid className="rtl" centered>
                             <Grid.Row textAlign="center">
-                                <Button color="purple" onClick={() => {
-                                    this.props.history.push('/report');
-                                }}>دریافت گزارش</Button>
+                                <Button as={Link} color="purple" to="/report">دریافت گزارش</Button>
                             </Grid.Row>
                         </Grid>
                     </Segment>

@@ -8,18 +8,71 @@ import { Products } from './components/Products';
 import LoginPage from './components/Login';
 import { Invoices } from './components/Invoices';
 import { Report } from './components/Report';
+import { CookieUtil } from './components/utilities/CookieUtil';
+import { FetchUtil } from './components/utilities/FetchUtil';
+import { History } from 'history';
 
-export default class App extends Component {
+interface ILocalState {
+  isLoggedIn: boolean;
+  username: string;
+  loaded: boolean;
+};
+
+interface IProps {
+  history: History;
+}
+
+export default class App extends Component<IProps, ILocalState> {
   public static displayName = App.name;
 
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      isLoggedIn: false,
+      username: '',
+      loaded: false
+    };
+  }
+
+  public async componentDidMount() {
+    var loginToken = CookieUtil.getCookie("logintoken");
+    if (loginToken != null) {
+      const url = '/api/login/is-logged-in';
+      var response = await FetchUtil.fetchFromUrl(url);
+      const loggedIn = response['isLoggedIn'];
+      if (loggedIn) {
+        const username = response['username'];
+
+        this.setState({
+          isLoggedIn: true,
+          username: username,
+          loaded: true
+        });
+
+        return;
+      }
+    }
+    this.setState({
+      isLoggedIn: false,
+      loaded: true
+    });
+  }
+
   public render() {
+    if (this.state.loaded && !this.state.isLoggedIn) {
+      return (
+        <Layout isLoggedIn={this.state.isLoggedIn} username={this.state.username} history={this.props.history}>
+          <Route path="/" component={LoginPage} />
+        </Layout>
+      );
+    }
+
     return (
-      <Layout>
-        <Route exact path="/" component={Home} />
+      <Layout isLoggedIn={this.state.isLoggedIn} username={this.state.username} history={this.props.history}>
+        <Route exact path="/" component={Dashboard} />
         <Route path="/cart" component={Cart} />
-        <Route path="/dashboard" component={Dashboard} />
         <Route path="/products" component={Products} />
-        <Route path="/login" component={LoginPage} />
         <Route path="/invoices" component={Invoices} />
         <Route path="/report" component={Report} />
       </Layout>

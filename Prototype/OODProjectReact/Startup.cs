@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace OODProjectReact
 {
@@ -46,6 +47,12 @@ namespace OODProjectReact
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.Use(async (context, next) =>
+            {
+                new UserInitializer().Initilize(context);
+                await next.Invoke();
+            });
 
             app.UseMvc(routes =>
             {
