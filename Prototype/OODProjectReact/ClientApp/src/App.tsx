@@ -8,6 +8,7 @@ import { Products } from './components/Products';
 import LoginPage from './components/Login';
 import { Invoices } from './components/Invoices';
 import { Report } from './components/Report';
+import { AddProduct } from './components/AddProduct';
 import { CookieUtil } from './components/utilities/CookieUtil';
 import { FetchUtil } from './components/utilities/FetchUtil';
 import { History } from 'history';
@@ -75,6 +76,7 @@ export default class App extends Component<IProps, ILocalState> {
         <Route path="/products" component={Products} />
         <Route path="/invoices" component={Invoices} />
         <Route path="/report" component={Report} />
+        <Route path="/add-product" component={AddProduct} />
       </Layout>
     );
   }

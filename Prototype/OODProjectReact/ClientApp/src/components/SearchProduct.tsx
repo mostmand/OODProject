@@ -15,7 +15,11 @@ interface IProps {
 const initialState: ILocalState = { isLoading: false, results: [], value: '' };
 
 export default class SearchProduct extends Component<IProps, ILocalState> {
-    state = initialState
+    constructor(props: IProps) {
+        super(props);
+
+        this.state = initialState;
+    }
 
     handleResultSelect = (e: React.MouseEvent<HTMLElement, MouseEvent>, { result }: SearchResultData) => {
         const product = result as IProduct;
@@ -24,7 +28,8 @@ export default class SearchProduct extends Component<IProps, ILocalState> {
 
     handleSearchChange = async (e: React.MouseEvent<HTMLElement, MouseEvent>, { value }: SearchProps) => {
         if (value === undefined || value.length < 1) {
-            return this.setState(initialState);
+            this.setState(initialState);
+            return;
         }
 
         this.setState({ isLoading: true, results: [], value: value })

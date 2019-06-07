@@ -144,9 +144,9 @@ export class Products extends Component<{}, ILocalState>{
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column>
-                        <div>
+                        <Label.Group>
                             {tags}
-                        </div>
+                        </Label.Group>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={2}>
@@ -154,11 +154,10 @@ export class Products extends Component<{}, ILocalState>{
                         <CategoriesAccordion onAddClick={this.addTag} categories={categories}></CategoriesAccordion>
                     </Grid.Column>
                     <Grid.Column width={12}>
-                        <Header size="large">
-                            کالاهای یافت‌شده
-                        </Header>
                         <Segment>
-                            
+                            <Header size="large">
+                                کالاهای یافت‌شده
+                            </Header>
                         </Segment>
                     </Grid.Column>
                 </Grid.Row>

@@ -13,7 +13,7 @@ export class Dashboard extends Component<{}, {}>{
                         </Label>
                         <Grid className="rtl" centered>
                             <Grid.Row textAlign="center">
-                                <Button color="orange">افزودن کالا</Button>
+                                <Button color="orange" as={Link} to="/add-product">افزودن کالا</Button>
                                 <Button color="orange">گروه‌کالاها</Button>
                             </Grid.Row>
                         </Grid>
