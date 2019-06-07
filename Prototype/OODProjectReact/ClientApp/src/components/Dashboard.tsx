@@ -17,16 +17,15 @@ export class Dashboard extends Component<{}, {}>{
                                 <Button color="orange">گروه‌کالاها</Button>
                             </Grid.Row>
                         </Grid>
-
-                        <Divider></Divider>
-
+                    </Segment>
+                    <Segment raised className="ltr">
                         <Label as='a' color='green' ribbon="right" size="huge">
                             طرف حساب
                         </Label>
                         <Grid className="rtl" centered>
                             <Grid.Row textAlign="center">
-                                <Button color="teal">افزودن مشتری</Button>
-                                <Button color="teal">افزودن تأمین‌کننده</Button>
+                                <Button color="teal" as={Link} to="/add-customer">افزودن مشتری</Button>
+                                <Button color="teal" as={Link} to="/add-supplier">افزودن تأمین‌کننده</Button>
                             </Grid.Row>
                         </Grid>
                     </Segment>
@@ -34,12 +33,23 @@ export class Dashboard extends Component<{}, {}>{
 
                 <Grid.Column>
                     <Segment raised className="ltr">
-                    <Label as='a' color='violet' ribbon size="huge">
+                        <Label as='a' color='violet' ribbon size="huge">
                             گزارش
                         </Label>
                         <Grid className="rtl" centered>
                             <Grid.Row textAlign="center">
                                 <Button as={Link} color="purple" to="/report">دریافت گزارش</Button>
+                            </Grid.Row>
+                        </Grid>
+                    </Segment>
+
+                    <Segment raised className="ltr">
+                        <Label as='a' color='blue' ribbon size="huge">
+                            صندوق‌دار
+                        </Label>
+                        <Grid className="rtl" centered>
+                            <Grid.Row textAlign="center">
+                                <Button as={Link} color="twitter" to="/add-cashier">افزودن صندوق‌دار</Button>
                             </Grid.Row>
                         </Grid>
                     </Segment>

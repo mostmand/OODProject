@@ -1,7 +1,7 @@
 import React, { Component, FormEvent } from "react";
 import { IProduct } from "./IProduct";
 import SearchProduct from "./SearchProduct";
-import { Table, Image, Header, Grid, Button, Icon, Radio, CheckboxProps, Label } from "semantic-ui-react";
+import { Table, Image, Header, Grid, Button, Icon, Radio, CheckboxProps, Label, Divider, Input, Dropdown } from "semantic-ui-react";
 import { CartUtil } from "./utilities/CartUtil";
 
 interface IProductItem {
@@ -136,9 +136,7 @@ export class Cart extends Component<{}, ILocalState> {
             <Grid>
                 <Grid.Row columns={2}>
                     <Grid.Column width={11}>
-                        <Header as='h2'>
-                            اقلام
-                        </Header>
+                        <Dropdown search options={[{text: 'علی احمدی', value: '1'}]} selection icon="search" placeholder="نام مشتری"></Dropdown>
                     </Grid.Column>
                     <Grid.Column width={5}>
                         <Button.Group>
@@ -149,6 +147,9 @@ export class Cart extends Component<{}, ILocalState> {
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
+                    <Header as='h2'>
+                        اقلام
+                    </Header>
                     <Table color="teal" textAlign="center">
                         <Table.Header>
                             <Table.Row>
@@ -163,6 +164,23 @@ export class Cart extends Component<{}, ILocalState> {
                             {items}
                         </Table.Body>
                     </Table>
+                </Grid.Row>
+
+
+                <Divider>
+
+                </Divider>
+
+                <Grid.Row>
+                    <Grid.Column>
+                        مجموع 82000 تومان
+                    </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                    <Grid.Column>
+                        <Button color="purple" fluid>صدور فاکتور</Button>
+                    </Grid.Column>
                 </Grid.Row>
             </Grid >
         );

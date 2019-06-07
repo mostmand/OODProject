@@ -12,6 +12,9 @@ import { AddProduct } from './components/AddProduct';
 import { CookieUtil } from './components/utilities/CookieUtil';
 import { FetchUtil } from './components/utilities/FetchUtil';
 import { History } from 'history';
+import { AddCashier } from './AddCashier';
+import { AddCustomer } from './AddCustomer';
+import { AddSupplier } from './components/AddSupplier';
 
 interface ILocalState {
   isLoggedIn: boolean;
@@ -77,6 +80,9 @@ export default class App extends Component<IProps, ILocalState> {
         <Route path="/invoices" component={Invoices} />
         <Route path="/report" component={Report} />
         <Route path="/add-product" component={AddProduct} />
+        <Route path="/add-cashier" component={AddCashier} />
+        <Route path="/add-customer" component={AddCustomer} />
+        <Route path="/add-supplier" component={AddSupplier} />
       </Layout>
     );
   }
