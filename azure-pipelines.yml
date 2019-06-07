@@ -30,8 +30,3 @@ steps:
     workingDir: './Prototype/OODProjectReact/ClientApp'
     customCommand: 'run build'
   displayName: 'npm run build'
-
-- task: Docker@2
-  inputs:
-    command: 'build'
-    Dockerfile: '**/DockerFile'
