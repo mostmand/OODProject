@@ -68,7 +68,7 @@ CREATE TABLE [dbo].[Category]
 (
     [Id] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
     [ParentCategoryId] INT NULL,
-    CONSTRAINT [FK_Category_ParentCategoryId] FOREIGN KEY ([ParentCategoryId]) REFERENCES [dbo].[Category] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT [FK_Category_ParentCategoryId] FOREIGN KEY ([ParentCategoryId]) REFERENCES [dbo].[Category] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 CREATE TABLE [dbo].[Good_Category]
@@ -104,8 +104,8 @@ CREATE TABLE [dbo].[PurchaseInvoice]
     [Id] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
     [InvoiceId] INT NOT NULL,
     [SupplierId] INT NOT NULL,
-    CONSTRAINT [FK_PurchaseInvoice_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES [dbo].[Invoice] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT [FK_PurchaseInvoice_SupplierId] FOREIGN KEY ([SupplierId]) REFERENCES [dbo].[Supplier] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT [FK_PurchaseInvoice_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES [dbo].[Invoice] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT [FK_PurchaseInvoice_SupplierId] FOREIGN KEY ([SupplierId]) REFERENCES [dbo].[Supplier] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 CREATE TABLE [dbo].[SellInvoice]
@@ -113,8 +113,8 @@ CREATE TABLE [dbo].[SellInvoice]
     [Id] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
     [InvoiceId] INT NOT NULL,
     [CustomerId] INT NOT NULL,
-    CONSTRAINT [FK_SellInvoice_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES [dbo].[Invoice] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT [FK_SellInvoice_CustomerId] FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[Customer] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT [FK_SellInvoice_InvoiceId] FOREIGN KEY ([InvoiceId]) REFERENCES [dbo].[Invoice] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT [FK_SellInvoice_CustomerId] FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[Customer] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 CREATE TABLE [dbo].[Payment]
@@ -126,7 +126,7 @@ CREATE TABLE [dbo].[Payment]
 
 CREATE TABLE [dbo].[CustomerPayment]
 (
-    [PaymentId] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    [PaymentId] INT NOT NULL,
     [SellInvoiceId] INT NOT NULL,
     CONSTRAINT [FK_CustomerPayment_PaymentId] FOREIGN KEY ([PaymentId]) REFERENCES [dbo].[Payment] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT [FK_CustomerPayment_SellInvoiceId] FOREIGN KEY ([SellInvoiceId]) REFERENCES [dbo].[SellInvoice] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
@@ -134,7 +134,7 @@ CREATE TABLE [dbo].[CustomerPayment]
 
 CREATE TABLE [dbo].[SupplierPayment]
 (
-    [PaymentId] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
+    [PaymentId] INT NOT NULL,
     [PurchaseInvoiceId] INT NOT NULL,
     CONSTRAINT [FK_SupplierPayment_PaymentId] FOREIGN KEY ([PaymentId]) REFERENCES [dbo].[Payment] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT [FK_SupplierPayment_PurchaseInvoiceId] FOREIGN KEY ([PurchaseInvoiceId]) REFERENCES [dbo].[PurchaseInvoice] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE
