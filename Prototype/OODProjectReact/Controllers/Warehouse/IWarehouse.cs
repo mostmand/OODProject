@@ -16,8 +16,8 @@ namespace OODProjectReact.Controllers.Warehouse
 
         List<Good> GetGoodsByKeyword(string keyword);
 
-        List<Good> GetAllGoods();
+        List<Good> GetAllGoods(int from, int size);
 
-        Good GetGoodByID(long id);
+        Good GetGoodByID(int id);
     }
 }
