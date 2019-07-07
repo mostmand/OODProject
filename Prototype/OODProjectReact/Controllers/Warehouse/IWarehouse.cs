@@ -8,7 +8,11 @@ namespace OODProjectReact.Controllers.Warehouse
 {
     interface IWarehouse
     {
-        void AddKala(Good good);
+        void AddGood(Good good);
+
+        void EditGood(Good good);
+
+        void DeletGood(int goodId);
 
         List<Good> GetGoodsByKeyword(string keyword);
 
