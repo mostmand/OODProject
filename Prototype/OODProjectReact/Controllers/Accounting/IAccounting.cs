@@ -12,8 +12,20 @@ namespace OODProjectReact.Controllers.Accounting
 
         long CreatePurchaseInvoice(PurchaseInvoice purchaseInvoice);
 
+        void CreateCustomerPayment(CustomerPayment payment);
+
+        void CreateSupplierPayment(SupplierPayment payment);
+
+        List<SellInvoice> GetSellInvoices(int from, int size);
+
+        List<PurchaseInvoice> GetPurchaseInvoices(int from, int size);
+
+        SellInvoice GetSellInvoiceById(int Id);
+
+        PurchaseInvoice GetPurchaseInvoiceById(int Id);
+
         long GetCustomerTurnOver(int customerId);
 
-        void SetDiscountOnAllGoods(double discountPercent);
+        void EditDiscountOnAllGoods(double discountPercent);
     }
 }
