@@ -37,7 +37,7 @@ namespace OODProjectReact.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.;Database=ood_project;User ID=ood_project;Password=123;");
+                optionsBuilder.UseSqlServer("Server=.;Database=ood_project;User ID=user;Password=123;");
             }
         }
 
@@ -85,12 +85,9 @@ namespace OODProjectReact.Models
                     .HasName("UQ__Good__CA1ECF0D36FD585B")
                     .IsUnique();
 
-                entity.Property(e => e.Explanation).IsUnicode(false);
-
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                    .HasMaxLength(255);
 
                 entity.Property(e => e.Sku)
                     .IsRequired()
@@ -131,8 +128,7 @@ namespace OODProjectReact.Models
             {
                 entity.Property(e => e.GoodName)
                     .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                    .HasMaxLength(255);
 
                 entity.HasOne(d => d.Good)
                     .WithMany(p => p.InvoiceItem)
@@ -187,18 +183,14 @@ namespace OODProjectReact.Models
 
                 entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.LastName).HasMaxLength(100);
 
                 entity.Property(e => e.MobileNumber)
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Name).HasMaxLength(100);
             });
 
             modelBuilder.Entity<PurchaseInvoice>(entity =>
@@ -233,9 +225,7 @@ namespace OODProjectReact.Models
 
             modelBuilder.Entity<Supplier>(entity =>
             {
-                entity.Property(e => e.Address)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.Property(e => e.Address).HasMaxLength(255);
 
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.Supplier)
