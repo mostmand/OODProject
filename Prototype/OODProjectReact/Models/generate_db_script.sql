@@ -1,8 +1,8 @@
 CREATE TABLE [dbo].[Person]
 (
     [Id] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
-    [Name] VARCHAR(100) NULL,
-    [LastName] VARCHAR(100) NULL,
+    [Name] NVARCHAR(100) NULL,
+    [LastName] NVARCHAR(100) NULL,
     [MobileNumber] VARCHAR(10) NOT NULL UNIQUE,
     [CreationDate] DATETIME2 NOT NULL DEFAULT(getdate()),
     [IsLegalPerson] BIT NOT NULL DEFAULT(0),
@@ -43,11 +43,11 @@ CREATE TABLE [dbo].[Good]
 (
     [Id] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
     [SKU] VARCHAR(13) NOT NULL UNIQUE,
-    [Name] VARCHAR(255) NOT NULL,
+    [Name] NVARCHAR(255) NOT NULL,
     [Price] INT NOT NULL DEFAULT(0),
     [Quantity] INT NOT NULL DEFAULT(0),
     [Discount] INT NOT NULL DEFAULT(0),
-    [Explanation] VARCHAR(MAX) NULL 
+    [Explanation] NVARCHAR(MAX) NULL 
 );
 
 CREATE TABLE [dbo].[InvoiceItem]
@@ -55,7 +55,7 @@ CREATE TABLE [dbo].[InvoiceItem]
     [Id] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
     [InvoiceId] INT NOT NULL,
     [GoodId] INT NOT NULL,
-    [GoodName] VARCHAR(255) NOT NULL,
+    [GoodName] NVARCHAR(255) NOT NULL,
     [GoodPrice] INT NOT NULL,
     [Quantity] INT NOT NULL,
     [Discount] INT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE [dbo].[Customer]
 CREATE TABLE [dbo].[Supplier]
 (
     [Id] INT IDENTITY(1, 1) NOT NULL PRIMARY KEY,
-    [Address] VARCHAR(255) NULL,
+    [Address] NVARCHAR(255) NULL,
     [Balance] INT NOT NULL DEFAULT(0),
     [TotalSellFee] INT NOT NULL DEFAULT(0),
     [PersonId] INT NOT NULL,

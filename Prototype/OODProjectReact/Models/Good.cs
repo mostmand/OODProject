@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace OODProjectReact.Models
@@ -20,6 +21,7 @@ namespace OODProjectReact.Models
         public string Explanation { get; set; }
 
         public virtual ICollection<GoodCategory> GoodCategory { get; set; }
+
         public virtual ICollection<InvoiceItem> InvoiceItem { get; set; }
     }
 }

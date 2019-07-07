@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Segment, Form, Label, Input, TextArea, Grid, Button, Divider, Header } from "semantic-ui-react";
 import { CategoryInput } from "./CategoryInput";
 import { ITag } from "./ITag";
+import { FetchUtil } from "./utilities/FetchUtil";
 
 interface ILocalState {
     name: string;
@@ -82,7 +83,31 @@ const initialState: ILocalState = {
     sku: ''
 };
 
+interface IGood {
+    Id: number;
+    Sku: string;
+    Name: string;
+    Price: number;
+    Quantity: number;
+    Discount: number;
+    Explanation: string;
+    // GoodCategory: [string];
+}
+
 export class AddProduct extends Component<{}, ILocalState> {
+    addProduct = ((event: any, data: any) => {
+        var good: IGood = {
+            Id: 0,
+            Sku: this.state.sku,
+            Name: this.state.name,
+            Price: this.state.price,
+            Quantity: this.state.quantity,
+            Explanation: this.state.description,
+            Discount: this.state.discount
+        };
+        FetchUtil.postToUrl('/api/Warehouse/add-good', good);
+    });
+
     constructor(props: any) {
         super(props);
 
@@ -189,7 +214,7 @@ export class AddProduct extends Component<{}, ILocalState> {
 
                         <Grid.Row>
                             <Grid.Column className="ltr">
-                                <Button color="green" size="large" fluid>
+                                <Button color="green" size="large" fluid onClick={this.addProduct}>
                                     ذخیره
                             </Button>
                             </Grid.Column>
