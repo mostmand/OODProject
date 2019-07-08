@@ -66,6 +66,7 @@ class GoodSummary extends Component<IGood> {
     };
 
     deleteGood = async (id: number) => {
+        CartUtil.removeFromCart(String(id));
         await FetchUtil.postToUrl('/api/Inventory/delete-good?goodId=' + id, null);
     }
 
