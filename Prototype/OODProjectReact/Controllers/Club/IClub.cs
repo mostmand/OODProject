@@ -8,23 +8,48 @@ namespace OODProjectReact.Controllers.Club
 {
     interface IClub
     {
-        // push test
+        ClubRuleset GetClubRules();
+
+        void ChangeClubRules(ClubRuleset rules);
+
         List<Customer> GetCustomersByKeyword(string keyword);
 
         List<Supplier> GetSuppliersByKeyword(string keyword);
 
+        // جزء حزفیات پیاده سازی است
         void RegisterCustomer(Person person);
 
+        // جزء حزفیات پیاده سازی است
         void RegisterSupplier(Supplier customer);
     }
 
-    //interface IRegisterRequest
-    //{
-    //    Person Person { get; set; }
-    //}
+    public class ClubRuleset
+    {
+        // مشتری به ازای هر خرید بالاتر از فلان قیمت، بهمان مقدار امتیاز می‌گیرد
+        public List<PriceRule> PriceRules { get; set; }
 
-    //interface IRegisterSupplierRequest : IRegisterRequest
-    //{
-    //    string Address { get; set; }
-    //}
+        // مشتری به ازای چه مقدار امتیاز چه سطحی دارد
+        public List<LevelRule> LevelRules { get; set; }
+    }
+
+    public class PriceRule
+    {
+        public long RequiredTotalPrice { get; set; }
+
+        public int Score { get; set; }
+    }
+
+    public class LevelRule
+    {
+        public int RequiredScore { get; set; }
+
+        public CustomerLevel Level { get; set; }
+    }
+
+    public enum CustomerLevel
+    {
+        Bronze,
+        Silver,
+        Gold
+    }
 }
