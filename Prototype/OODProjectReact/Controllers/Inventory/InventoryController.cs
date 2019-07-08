@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OODProjectReact.Controllers.Warehouse
+namespace OODProjectReact.Controllers.Inventory
 {
     [Route("api/[controller]")]
-    public class WarehouseController : ControllerBase, IWarehouse
+    public class InventoryController : ControllerBase, IInventory
     {
         private readonly ood_projectContext db = new ood_projectContext();
 
