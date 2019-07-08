@@ -74,6 +74,11 @@ namespace OODProjectReact.Controllers.Inventory
         public List<IGood> GetAllGoods([FromQuery]int from, [FromQuery]int size, [FromQuery]string keyword, [FromBody]List<int> categoryIds)
         {
             var result = db.Good.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                result = result.Where(x => x.Name.Contains(keyword) || x.Explanation.Contains(keyword));
+            }
             result = result.Skip(from).Take(size);
 
             return result.Select(x => ToIGood(x)).ToList();
