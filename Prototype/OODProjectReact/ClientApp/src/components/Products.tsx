@@ -36,9 +36,6 @@ export class Products extends Component<{}, ILocalState>{
         newState.products = data.map((element: any) => element as IGood);
         this.setState(newState);
     }
-    addProduct = (productId: string) => {
-        CartUtil.addToCart(productId);
-    };
 
     addTag = (tag: ITag) => {
         const tags = this.state.tags;

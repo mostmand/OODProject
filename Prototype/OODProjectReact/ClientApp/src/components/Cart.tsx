@@ -3,9 +3,11 @@ import { IProduct } from "./IProduct";
 import SearchProduct from "./SearchProduct";
 import { Table, Image, Header, Grid, Button, Icon, Radio, CheckboxProps, Label, Divider, Input, Dropdown } from "semantic-ui-react";
 import { CartUtil } from "./utilities/CartUtil";
+import { FetchUtil } from "./utilities/FetchUtil";
+import { IGood } from "./Products";
 
 interface IProductItem {
-    product: IProduct;
+    product: IGood;
     quantity: number;
 }
 
@@ -15,23 +17,18 @@ interface ILocalState {
 }
 
 export class Cart extends Component<{}, ILocalState> {
-    getProductInfo(productId: string): IProduct {
-        // TODO implement using server api
-        return {
-            id: productId,
-            description: 'توضیحات',
-            image: 'Temp/152408.jpg',
-            price: '82000 تومان',
-            title: 'کالای تست'
-        }
+    getProductInfo = async (productId: string) => {
+        const response = await FetchUtil.fetchFromUrl('/api/Inventory/get-good?id=' + productId)
+        const good = (await response.json()) as IGood;
+        return good;
     }
 
-    getCart(): { [id: string]: IProductItem; } {
+    async getCart(): Promise<{ [id: string]: IProductItem; }> {
         const storedCart = CartUtil.getCart();
 
         const cart: { [id: string]: IProductItem; } = {};
         for (const [productId, quantity] of Object.entries(storedCart)) {
-            const product = this.getProductInfo(productId);
+            const product = await this.getProductInfo(productId);
             cart[productId] = { product: product, quantity: quantity };
         }
         return cart;
@@ -87,12 +84,23 @@ export class Cart extends Component<{}, ILocalState> {
         });
     };
 
+    getProductsInfo = async () => {
+        var products = await this.getCart();
+
+        var newState = (Object.assign(this.state)) as ILocalState;
+        newState.products = products;
+
+        this.setState(newState);
+    };
+
     constructor(props: any) {
         super(props);
         this.state = {
-            products: this.getCart(),
+            products: {},
             isSaleInvoice: false
         };
+
+        this.getProductsInfo();
     }
 
     public render() {
@@ -101,27 +109,33 @@ export class Cart extends Component<{}, ILocalState> {
 
         for (const product of Object.values(products)) {
             const minusIcon = product.quantity > 1 ?
-                <Button icon circular onClick={() => this.decrementProductQuantity(product.product.id)}>
+                <Button icon circular onClick={() => this.decrementProductQuantity(String(product.product.id))}>
                     <Icon name="minus circle" color="red" size="large"></Icon>
                 </Button>
                 : [];
             items.push(
                 <Table.Row>
                     <Table.Cell>
-                        {product.product.title}
+                        {product.product.sku}
+                    </Table.Cell>
+                    <Table.Cell>
+                        {product.product.name}
                     </Table.Cell>
                     <Table.Cell>
                         {product.quantity}
-                        <Button icon circular onClick={() => this.incrementProductQuantity(product.product.id)}>
+                        <Button icon circular onClick={() => this.incrementProductQuantity(String(product.product.id))}>
                             <Icon name="plus circle" color="green" size="large"></Icon>
                         </Button>
                         {minusIcon}
                     </Table.Cell>
                     <Table.Cell>
-                        {product.product.price}
+                        {product.product.price + " تومان"}
                     </Table.Cell>
                     <Table.Cell>
-                        <Button icon circular onClick={() => this.removeProduct(product.product.id)}>
+                        {product.product.discount + " %"}
+                    </Table.Cell>
+                    <Table.Cell>
+                        <Button icon circular onClick={() => this.removeProduct(String(product.product.id))}>
                             <Icon name="remove circle" color="red" size="large"></Icon>
                         </Button>
                     </Table.Cell>
@@ -133,7 +147,7 @@ export class Cart extends Component<{}, ILocalState> {
             <Grid>
                 <Grid.Row columns={2}>
                     <Grid.Column width={11}>
-                        <Dropdown search options={[{text: 'علی احمدی', value: '1'}]} selection icon="search" placeholder="نام مشتری"></Dropdown>
+                        <Dropdown search options={[{ text: 'علی احمدی', value: '1' }]} selection icon="search" placeholder="نام مشتری"></Dropdown>
                     </Grid.Column>
                     <Grid.Column width={5}>
                         <Button.Group>
@@ -150,9 +164,11 @@ export class Cart extends Component<{}, ILocalState> {
                     <Table color="teal" textAlign="center">
                         <Table.Header>
                             <Table.Row>
+                                <Table.HeaderCell>شناسه</Table.HeaderCell>
                                 <Table.HeaderCell>نام کالا</Table.HeaderCell>
                                 <Table.HeaderCell>تعداد</Table.HeaderCell>
                                 <Table.HeaderCell>قیمت</Table.HeaderCell>
+                                <Table.HeaderCell>تخفیف</Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
