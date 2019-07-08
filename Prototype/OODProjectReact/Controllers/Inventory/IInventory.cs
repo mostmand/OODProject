@@ -17,6 +17,13 @@ namespace OODProjectReact.Controllers.Inventory
         List<IGood> GetAllGoods(int from, int size, string keyword, List<int> categoryIds);
 
         IGood GetGoodByID(int id);
+
+        /// <summary>
+        /// در زمان خرید یا فروش تعداد کالا را بیشتر یا کمتر می‌کند
+        /// </summary>
+        /// <param name="goodId">آی دی کالایی که تعداد آن تغییر کرده</param>
+        /// <param name="amount">میزان افزایش یا کاهش جنس که برای افزایش مثبت است و بر عکس</param>
+        void IncreaseGoodQuantity(int goodId, int amount);
     }
 
     public class IGood
