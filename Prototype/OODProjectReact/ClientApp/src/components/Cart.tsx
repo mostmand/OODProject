@@ -120,9 +120,6 @@ export class Cart extends Component<{}, ILocalState> {
                     <Table.Cell>
                         {product.product.price}
                     </Table.Cell>
-                    <Table.Cell textAlign="center">
-                        <Image height="75rem" width="auto" src={product.product.image}></Image>
-                    </Table.Cell>
                     <Table.Cell>
                         <Button icon circular onClick={() => this.removeProduct(product.product.id)}>
                             <Icon name="remove circle" color="red" size="large"></Icon>
@@ -156,7 +153,6 @@ export class Cart extends Component<{}, ILocalState> {
                                 <Table.HeaderCell>نام کالا</Table.HeaderCell>
                                 <Table.HeaderCell>تعداد</Table.HeaderCell>
                                 <Table.HeaderCell>قیمت</Table.HeaderCell>
-                                <Table.HeaderCell>تصویر</Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
