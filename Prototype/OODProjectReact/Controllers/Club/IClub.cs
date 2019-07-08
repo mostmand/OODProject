@@ -16,10 +16,10 @@ namespace OODProjectReact.Controllers.Club
 
         List<Supplier> GetSuppliersByKeyword(string keyword);
 
-        // جزء حزفیات پیاده سازی است
+        // جزء حذفیات پیاده سازی است
         void RegisterCustomer(Person person);
 
-        // جزء حزفیات پیاده سازی است
+        // جزء حذفیات پیاده سازی است
         void RegisterSupplier(Supplier customer);
     }
 
