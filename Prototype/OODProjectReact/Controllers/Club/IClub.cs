@@ -18,6 +18,20 @@ namespace OODProjectReact.Controllers.Club
 
         byte GetCustomerLevelDiscountById(int customerId);
 
+        /// <summary>
+        /// افزایش یا کاهش تراز مالی مشتری
+        /// </summary>
+        /// <param name="customerId">آی دی مشتری</param>
+        /// <param name="amount">مقدار مثبت برای افزایش بستانکاری و بر عکس</param>
+        void IncreaseCustomerBalance(int customerId, int amount);
+
+        /// <summary>
+        /// افزایش یا کاهش تراز مالی تامین کننده
+        /// </summary>
+        /// <param name="supplierId">آی دی تامین کننده</param>
+        /// <param name="amount">مقدار مثبت برای افزایش بستانکاری و بر عکس</param>
+        void IncreaseSupplierBalance(int supplierId, int amount);
+
         // جزء حذفیات پیاده سازی است
         void RegisterCustomer(Person person);
 
