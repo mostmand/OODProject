@@ -17,6 +17,8 @@ namespace OODProjectReact.Controllers.Report
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
+        public DateTime GenerateDate { get; set; }
+
         List<T> ReportItems { get; set; }
     }
 
