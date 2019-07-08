@@ -62,7 +62,6 @@ namespace OODProjectReact.Controllers.Inventory
                 savedGood.Price = good.Price;
                 savedGood.Discount = good.Discount;
                 savedGood.Explanation = good.Explanation;
-                savedGood.Quantity = good.Quantity;
 
                 //var categoryIds = good.CategoryIds.ToHashSet();
                 //savedGood.GoodCategory = categoryIds.Select(categoryId => new GoodCategory { Good = newGood, CategoryId = categoryId }).ToList();

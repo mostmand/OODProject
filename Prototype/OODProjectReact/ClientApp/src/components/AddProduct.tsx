@@ -11,7 +11,7 @@ interface ILocalState {
     sku: string;
     price: number;
     discount: number;
-    quantity: number;
+    // quantity: number;
     description: string;
     categoryIds: string[];
 }
@@ -81,7 +81,7 @@ const initialState: ILocalState = {
     discount: 0,
     categoryIds: [],
     description: '',
-    quantity: 0,
+    // quantity: 0,
     sku: ''
 };
 
@@ -107,7 +107,7 @@ export class AddProduct extends Component<IProps, ILocalState> {
             Sku: this.state.sku,
             Name: this.state.name,
             Price: this.state.price,
-            Quantity: this.state.quantity,
+            Quantity: 0,
             Explanation: this.state.description,
             Discount: this.state.discount,
             CategoryIds: this.state.categoryIds.map(Number)
@@ -155,7 +155,7 @@ export class AddProduct extends Component<IProps, ILocalState> {
                         </Grid.Row>
 
                         <Grid.Row>
-                            <Grid.Column width={5}>
+                            <Grid.Column width={8}>
                                 <Form.Field>
                                     <label>قیمت</label>
                                     <Input label={{ basic: true, content: 'تومان' }}
@@ -168,7 +168,7 @@ export class AddProduct extends Component<IProps, ILocalState> {
                                 </Form.Field>
                             </Grid.Column>
 
-                            <Grid.Column width={5}>
+                            {/* <Grid.Column width={5}>
                                 <Form.Field>
                                     <label>تعداد</label>
                                     <Input type="number" min={0} step={1} value={this.state.quantity} onChange={(event, data) => {
@@ -177,9 +177,9 @@ export class AddProduct extends Component<IProps, ILocalState> {
                                         this.setState(state);
                                     }} />
                                 </Form.Field>
-                            </Grid.Column>
+                            </Grid.Column> */}
 
-                            <Grid.Column width={6}>
+                            <Grid.Column width={8}>
                                 <Form.Field>
                                     <label>تخفیف</label>
                                     <Input type="number" min={0} max={100} step={1} value={this.state.discount}

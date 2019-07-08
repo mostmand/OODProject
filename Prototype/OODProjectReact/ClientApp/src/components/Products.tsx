@@ -180,7 +180,6 @@ export class Products extends Component<{}, ILocalState>{
             <Grid>
                 <Grid.Row>
                     <Grid.Column verticalAlign="middle" textAlign="center">
-                        {/* <SearchProduct addProduct={this.addProduct} /> */}
                         {<Input search icon="search" placeholder="جستجو" onKeyDown={this.handleKeyDown} onChange={this.changeSearchKeyword}></Input>}
                     </Grid.Column>
                 </Grid.Row>

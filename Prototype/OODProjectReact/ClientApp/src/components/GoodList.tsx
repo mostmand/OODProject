@@ -3,6 +3,7 @@ import { Segment, Table, Button, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { IGood } from "./Products";
 import { CartUtil } from "./utilities/CartUtil";
+import { FetchUtil } from "./utilities/FetchUtil";
 
 interface IProps {
     goods: IGood[];
@@ -64,6 +65,10 @@ class GoodSummary extends Component<IGood> {
         CartUtil.addToCart(String(productId));
     };
 
+    deleteGood = async (id: number) => {
+        await FetchUtil.postToUrl('/api/Inventory/delete-good?goodId=' + id, null);
+    }
+
     public render() {
         return (
             <Table.Row>
@@ -86,16 +91,16 @@ class GoodSummary extends Component<IGood> {
                     {this.props.discount}
                 </Table.Cell>
                 <Table.Cell>
-                    <Button color="red"><Button.Content>
-                        حذف
+                    <Button color="red" onClick={() => {
+                        this.deleteGood(this.props.id)
+                            .then(() => { window.location.reload(); });
+                    }}><Button.Content>
+                            حذف
                     </Button.Content></Button>
-                    <Button color="teal" animated as={Link} to={'/product?id=' + this.props.id}>
-                        <Button.Content visible>برو</Button.Content>
-                        <Button.Content hidden>
-                            <Icon name='arrow left' />
-                        </Button.Content>
+                    <Button color="teal" as={Link} to={'/product?id=' + this.props.id}>
+                        <Button.Content visible>ویرایش</Button.Content>
                     </Button>
-                    <Button color="green" onClick={() => { this.addToCart(this.props.id) }}><Button.Content>
+                    <Button color="green" onClick={() => { this.addToCart(this.props.id); }}><Button.Content>
                         افزودن به سبد
                     </Button.Content></Button>
                 </Table.Cell>

@@ -83,7 +83,7 @@ class InvoiceSummary extends Component<IInvoice> {
                 </Table.Cell>
                 <Table.Cell>
                     <Button color="teal" animated as={Link} to={'/invoice?id=' + this.props.id}>
-                        <Button.Content visible>برو</Button.Content>
+                        <Button.Content visible>مشاهده</Button.Content>
                         <Button.Content hidden>
                             <Icon name='arrow left' />
                         </Button.Content>
