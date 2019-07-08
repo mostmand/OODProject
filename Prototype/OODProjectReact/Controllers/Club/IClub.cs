@@ -16,6 +16,8 @@ namespace OODProjectReact.Controllers.Club
 
         List<Supplier> GetSuppliersByKeyword(string keyword);
 
+        byte GetCustomerLevelDiscountById(int customerId);
+
         // جزء حذفیات پیاده سازی است
         void RegisterCustomer(Person person);
 
@@ -30,6 +32,8 @@ namespace OODProjectReact.Controllers.Club
 
         // مشتری به ازای چه مقدار امتیاز چه سطحی دارد
         public List<LevelRule> LevelRules { get; set; }
+
+        public List<DiscountRule> DiscountRules { get; set; }
     }
 
     public class PriceRule
@@ -44,6 +48,13 @@ namespace OODProjectReact.Controllers.Club
         public int RequiredScore { get; set; }
 
         public CustomerLevel Level { get; set; }
+    }
+
+    public class DiscountRule
+    {
+        public CustomerLevel Level { get; set; }
+
+        public byte DiscountPercent { get; set; }
     }
 
     public enum CustomerLevel

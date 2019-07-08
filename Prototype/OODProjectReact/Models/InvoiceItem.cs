@@ -11,7 +11,7 @@ namespace OODProjectReact.Models
         public string GoodName { get; set; }
         public int GoodPrice { get; set; }
         public int Quantity { get; set; }
-        public int? Discount { get; set; }
+        public byte? Discount { get; set; }
         public int TotalPrice
         {
             get
