@@ -38,7 +38,7 @@ namespace OODProjectReact.Controllers.Warehouse
         }
 
         [HttpPost("delete-good")]
-        public void DeleteGood(int goodId)
+        public void DeleteGood([FromQuery]int goodId)
         {
             var goodQuery = db.Good.Where(x => x.Id == goodId);
 
@@ -71,10 +71,17 @@ namespace OODProjectReact.Controllers.Warehouse
             }
         }
 
-        [HttpGet("get-all-goods")]
+        [HttpPost("get-all-goods")]
         public List<IGood> GetAllGoods([FromQuery]int from, [FromQuery]int size, [FromQuery]string keyword, [FromBody]List<int> categoryIds)
         {
-            throw new NotImplementedException();
+            var result = db.Good.AsQueryable();
+            if (from > 0)
+            {
+                result = result.Skip(from);
+            }
+            result = result.Take(size);
+
+            return result.Select(x => ToIGood(x)).ToList();
         }
 
         [HttpGet("get-good")]
