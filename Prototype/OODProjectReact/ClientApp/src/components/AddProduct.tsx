@@ -112,7 +112,7 @@ export class AddProduct extends Component<IProps, ILocalState> {
             Discount: this.state.discount,
             CategoryIds: this.state.categoryIds.map(Number)
         };
-        var response = await FetchUtil.postToUrl('/api/Warehouse/add-good', good);
+        var response = await FetchUtil.postToUrl('/api/Inventory/add-good', good);
         this.props.history.push("/products");
     };
 

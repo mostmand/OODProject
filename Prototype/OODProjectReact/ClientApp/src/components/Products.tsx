@@ -27,7 +27,7 @@ interface IGood {
 
 export class Products extends Component<{}, ILocalState>{
     search = async () => {
-        const url = '/api/Warehouse/get-all-goods?from=0&size=100&keyword=' + this.state.searchKeyword;
+        const url = '/api/Inventory/get-all-goods?from=0&size=100&keyword=' + this.state.searchKeyword;
         var response = await FetchUtil.postToUrl(url, []);
         var data = await response.json();
 
@@ -181,7 +181,7 @@ export class Products extends Component<{}, ILocalState>{
         this.state.products.forEach(good => {
             products.push(
                 <GoodComponent name={good.Name} price={good.Price} description={good.Explanation} productId={good.Id} qunatity={good.Quantity} key={good.Id}>
-                    
+
                 </GoodComponent>
             );
         });
