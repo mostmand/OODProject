@@ -28,6 +28,6 @@ namespace OODProjectReact.Controllers.Accounting
 
         long GetCustomerTurnOverInPerion(int customerId, DateTime start, DateTime end);
 
-        void EditDiscountOnAllGoods(double discountPercent);
+        void EditDiscountOnAllGoods(byte discountPercent);
     }
 }

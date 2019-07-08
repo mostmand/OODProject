@@ -12,7 +12,9 @@ namespace OODProjectReact.Models
 
         public int Id { get; set; }
         public int CustomerRate { get; set; }
-        public int Balance { get; set; }
+
+        // Duplicate property
+        //public int Balance { get; set; }
         public int TotalPurchaseFee { get; set; }
         public int PersonId { get; set; }
 
