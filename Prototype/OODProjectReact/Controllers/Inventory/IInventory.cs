@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OODProjectReact.Controllers.Warehouse
+namespace OODProjectReact.Controllers.Inventory
 {
-    interface IWarehouse
+    interface IInventory
     {
         void AddGood(IGood good);
 
