@@ -99,6 +99,26 @@ namespace OODProjectReact.Controllers.Inventory
             throw new Exception("Good not found");
         }
 
+        public void IncreaseGoodQuantity(int goodId, int amount)
+        {
+            var goodQuery = db.Good.Where(x => x.Id == goodId);
+
+            if (goodQuery.Any())
+            {
+                var good = goodQuery.First();
+
+                var newQuantity = good.Quantity + amount;
+                if (newQuantity > 0)
+                {
+                    good.Quantity = newQuantity;
+                }
+                else
+                {
+                    throw new Exception("Not enough quantity is available in the inventory");
+                }
+            }
+        }
+
         private IGood ToIGood(Good good)
         {
             return new IGood
