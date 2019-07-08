@@ -20,7 +20,7 @@ export class FetchUtil {
                 throw Error(response.statusText);
             }
             // console.log(response);
-            return await response.json();
+            return response;
         } catch (error) {
             console.log(error);
             throw error;
@@ -50,7 +50,7 @@ export class FetchUtil {
             if (!response.ok) {
                 throw Error(response.statusText);
             }
-            return await response.json();
+            return response;
         } catch (error) {
             console.log(error);
             throw error;

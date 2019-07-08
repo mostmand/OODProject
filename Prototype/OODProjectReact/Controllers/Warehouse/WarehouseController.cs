@@ -20,8 +20,6 @@ namespace OODProjectReact.Controllers.Warehouse
                 throw new FormatException("Invalid request id is set");
             }
 
-            var categoryIds = good.CategoryIds.ToHashSet();
-
             var newGood = new Good
             {
                 Name = good.Name,
@@ -32,35 +30,81 @@ namespace OODProjectReact.Controllers.Warehouse
                 Price = good.Price
             };
 
-            newGood.GoodCategory.Union(db.GoodCategory.Where(x => categoryIds.Contains(x.CategoryId)));
+            //var categoryIds = good.CategoryIds.ToHashSet();
+            //db.GoodCategory.AddRange(categoryIds.Select(categoryId => new GoodCategory { Good = newGood, CategoryId = categoryId }));
 
             db.Good.Add(newGood);
             db.SaveChanges();
         }
 
+        [HttpPost("delete-good")]
         public void DeleteGood(int goodId)
         {
-            throw new NotImplementedException();
+            var goodQuery = db.Good.Where(x => x.Id == goodId);
+
+            if (goodQuery.Any())
+            {
+                db.Good.Remove(goodQuery.First());
+                db.SaveChanges();
+            }
         }
 
-        public void EditGood(IGood good)
+        [HttpPost("edit-good")]
+        public void EditGood([FromBody]IGood good)
+        {
+            var savedGoodQuery = db.Good.Where(x => x.Id == good.Id);
+
+            if (savedGoodQuery.Any())
+            {
+                var savedGood = savedGoodQuery.First();
+
+                savedGood.Name = good.Name;
+                savedGood.Price = good.Price;
+                savedGood.Discount = good.Discount;
+                savedGood.Explanation = good.Explanation;
+                savedGood.Quantity = good.Quantity;
+
+                //var categoryIds = good.CategoryIds.ToHashSet();
+                //savedGood.GoodCategory = categoryIds.Select(categoryId => new GoodCategory { Good = newGood, CategoryId = categoryId }).ToList();
+
+                db.SaveChanges();
+            }
+        }
+
+        [HttpGet("get-all-goods")]
+        public List<IGood> GetAllGoods([FromQuery]int from, [FromQuery]int size, [FromQuery]string keyword, [FromBody]List<int> categoryIds)
         {
             throw new NotImplementedException();
         }
 
-        public List<Good> GetAllGoods(int from, int size)
+        [HttpGet("get-good")]
+        public IGood GetGoodByID([FromQuery]int id)
         {
-            throw new NotImplementedException();
+            var goodQuery = db.Good.Where(x => x.Id == id);
+            if (goodQuery.Any())
+            {
+                var good = goodQuery.First();
+
+                var igood = ToIGood(good);
+
+                return igood;
+            }
+            throw new Exception("Good not found");
         }
 
-        public Good GetGoodByID(int id)
+        private IGood ToIGood(Good good)
         {
-            throw new NotImplementedException();
-        }
-
-        public List<Good> GetGoodsByKeyword(string keyword)
-        {
-            throw new NotImplementedException();
+            return new IGood
+            {
+                Id = good.Id,
+                Name = good.Name,
+                CategoryIds = good.GoodCategory.Select(x => x.CategoryId).ToList(),
+                Discount = good.Discount,
+                Explanation = good.Explanation,
+                Price = good.Price,
+                Quantity = good.Quantity,
+                Sku = good.Sku
+            };
         }
     }
 }

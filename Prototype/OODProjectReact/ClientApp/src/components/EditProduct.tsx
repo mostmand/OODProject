@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Segment, Form, Label, Input, TextArea, Grid, Button, Divider, Header, Popup } from "semantic-ui-react";
+import { Segment, Form, Label, Input, TextArea, Grid, Button, Divider, Header } from "semantic-ui-react";
 import { CategoryInput } from "./CategoryInput";
 import { ITag } from "./ITag";
 import { FetchUtil } from "./utilities/FetchUtil";
 import { number } from "prop-types";
-import { async } from "q";
+import queryString from 'query-string'
 
 interface ILocalState {
+    id: number;
     name: string;
     sku: string;
     price: number;
@@ -76,6 +77,7 @@ const testCategories: ITag[] = [
 ];
 
 const initialState: ILocalState = {
+    id: 0,
     name: '',
     price: 0,
     discount: 0,
@@ -100,10 +102,10 @@ interface IProps {
     history: any;
 }
 
-export class AddProduct extends Component<IProps, ILocalState> {
-    addProduct = async (event: any, data: any) => {
+export class EditProduct extends Component<IProps, ILocalState> {
+    editProduct = async (event: any, data: any) => {
         var good: IGood = {
-            Id: 0,
+            Id: this.state.id,
             Sku: this.state.sku,
             Name: this.state.name,
             Price: this.state.price,
@@ -112,14 +114,46 @@ export class AddProduct extends Component<IProps, ILocalState> {
             Discount: this.state.discount,
             CategoryIds: this.state.categoryIds.map(Number)
         };
-        var response = await FetchUtil.postToUrl('/api/Warehouse/add-good', good);
+        var response = await FetchUtil.postToUrl('/api/Warehouse/edit-good', good);
         this.props.history.push("/products");
     };
 
     constructor(props: any) {
         super(props);
 
+
+        const value = queryString.parse(props.location.search);
+        const id = value.id;
+
+        if (!id) {
+            throw new Error("Id cannot be undefined");
+        }
+
+        initialState.id = parseInt(id as string);
         this.state = initialState;
+
+        this.fetchProductInfo();
+    }
+
+    fetchProductInfo = async () => {
+        const id = this.state.id;
+
+        var response = await FetchUtil.fetchFromUrl("/api/Warehouse/get-good?id=" + id);
+        var data = await response.json();
+
+        var newState: ILocalState = {
+            id: this.state.id,
+            name: data.name,
+            sku: data.sku,
+            categoryIds: data.categoryIds,
+            description: data.explanation,
+            discount: data.discount,
+            price: data.price,
+            quantity: data.quantity
+        };
+
+        this.setState(newState);
+
     }
 
     public render() {
@@ -145,11 +179,7 @@ export class AddProduct extends Component<IProps, ILocalState> {
                             <Grid.Column width={4}>
                                 <Form.Field required>
                                     <label>شناسه‌ی SKU</label>
-                                    <Input type="text" value={this.state.sku} onChange={(event, data) => {
-                                        var state: ILocalState = Object.assign(this.state);
-                                        state.sku = data.value;
-                                        this.setState(state);
-                                    }} />
+                                    <Input type="text" value={this.state.sku} disabled />
                                 </Form.Field>
                             </Grid.Column>
                         </Grid.Row>
@@ -222,7 +252,7 @@ export class AddProduct extends Component<IProps, ILocalState> {
 
                         <Grid.Row>
                             <Grid.Column className="ltr">
-                                <Button color="green" size="large" fluid onClick={this.addProduct}>
+                                <Button color="green" size="large" fluid onClick={this.editProduct}>
                                     ذخیره
                             </Button>
                             </Grid.Column>

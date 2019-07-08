@@ -14,11 +14,9 @@ namespace OODProjectReact.Controllers.Warehouse
 
         void DeleteGood(int goodId);
 
-        List<Good> GetGoodsByKeyword(string keyword);
+        List<IGood> GetAllGoods(int from, int size, string keyword, List<int> categoryIds);
 
-        List<Good> GetAllGoods(int from, int size);
-
-        Good GetGoodByID(int id);
+        IGood GetGoodByID(int id);
     }
 
     public class IGood

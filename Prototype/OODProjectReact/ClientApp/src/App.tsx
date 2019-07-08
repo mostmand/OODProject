@@ -15,6 +15,7 @@ import { History } from 'history';
 import { AddCashier } from './AddCashier';
 import { AddCustomer } from './AddCustomer';
 import { AddSupplier } from './components/AddSupplier';
+import { EditProduct } from './components/EditProduct';
 
 interface ILocalState {
   isLoggedIn: boolean;
@@ -44,9 +45,10 @@ export default class App extends Component<IProps, ILocalState> {
     if (loginToken != null) {
       const url = '/api/login/is-logged-in';
       var response = await FetchUtil.fetchFromUrl(url);
-      const loggedIn = response['isLoggedIn'];
+      var data = await response.json();
+      const loggedIn = data['isLoggedIn'];
       if (loggedIn) {
-        const username = response['username'];
+        const username = data['username'];
 
         this.setState({
           isLoggedIn: true,
@@ -83,6 +85,7 @@ export default class App extends Component<IProps, ILocalState> {
         <Route path="/add-cashier" component={AddCashier} />
         <Route path="/add-customer" component={AddCustomer} />
         <Route path="/add-supplier" component={AddSupplier} />
+        <Route path="/product" component={EditProduct} />
       </Layout>
     );
   }

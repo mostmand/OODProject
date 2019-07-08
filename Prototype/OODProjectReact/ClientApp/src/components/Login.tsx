@@ -42,8 +42,9 @@ export default class LoginPage extends React.Component<IProps, ILocalState>{
 
         try {
             var response = await FetchUtil.postToUrl(url, body);
-            if (response != null) {
-                CookieUtil.setCookie('logintoken', response, 10);
+            var data = await response.json();
+            if (data != null) {
+                CookieUtil.setCookie('logintoken', data, 10);
                 window.location.replace('/');
             }
             else {
