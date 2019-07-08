@@ -1,16 +1,40 @@
-import React, { Component, RefObject, createRef, ReactNode } from "react";
+import React, { Component, RefObject, createRef, ReactNode, ChangeEvent } from "react";
 import { CartUtil } from "./utilities/CartUtil";
 import SearchProduct from "./SearchProduct";
-import { Container, Grid, Label, Icon, Segment, Header } from "semantic-ui-react";
+import { Container, Grid, Label, Icon, Segment, Header, Input, InputOnChangeData } from "semantic-ui-react";
 import { CategoriesAccordion } from "./CategoriesAccordion";
 import { ICategory } from "./ICategory";
 import { ITag } from "./ITag";
+import { GoodComponent } from "./ProductComponent";
+import { FetchUtil } from "./utilities/FetchUtil";
 
 interface ILocalState {
     tags: ITag[];
+    products: IGood[];
+    searchKeyword: string;
+}
+
+interface IGood {
+    Id: number;
+    Sku: string;
+    Name: string;
+    Price: number;
+    Quantity: number;
+    Discount: number;
+    Explanation: string;
+    CategoryIds: number[];
 }
 
 export class Products extends Component<{}, ILocalState>{
+    search = async () => {
+        const url = '/api/Inventory/get-all-goods?from=0&size=100&keyword=' + this.state.searchKeyword;
+        var response = await FetchUtil.postToUrl(url, []);
+        var data = await response.json();
+
+        var newState = Object.assign(this.state) as ILocalState;
+        newState.products = data as IGood[];
+        this.setState(newState);
+    }
     addProduct = (productId: string) => {
         CartUtil.addToCart(productId);
     };
@@ -24,7 +48,11 @@ export class Products extends Component<{}, ILocalState>{
                 tagId: tag.tagId
             });
 
-            this.setState({ tags: newTags });
+            var newState = Object.assign(this.state) as ILocalState;
+
+            newState.tags = newTags;
+
+            this.setState(newState);
         }
     };
 
@@ -37,10 +65,24 @@ export class Products extends Component<{}, ILocalState>{
             this.setState({ tags: newTags });
         }
     };
+    handleKeyDown = (e: any) => {
+        if (e.key === 'Enter') {
+            this.search();
+        }
+    };
+    changeSearchKeyword = (event: ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+        var newState = Object.assign(this.state) as ILocalState;
+        newState.searchKeyword = data.value!;
+        this.setState(newState);
+    }
 
     constructor(props: {}) {
         super(props);
-        this.state = { tags: [] }
+        this.state = {
+            tags: [],
+            products: [],
+            searchKeyword: ''
+        }
     }
 
     render() {
@@ -134,12 +176,22 @@ export class Products extends Component<{}, ILocalState>{
             );
         });
 
+        var products: ReactNode[] = [];
+
+        this.state.products.forEach(good => {
+            products.push(
+                <GoodComponent name={good.Name} price={good.Price} description={good.Explanation} productId={good.Id} qunatity={good.Quantity} key={good.Id}>
+
+                </GoodComponent>
+            );
+        });
 
         return (
             <Grid>
                 <Grid.Row>
                     <Grid.Column verticalAlign="middle" textAlign="center">
-                        <SearchProduct addProduct={this.addProduct} />
+                        {/* <SearchProduct addProduct={this.addProduct} /> */}
+                        {<Input search icon="search" placeholder="جستجو" onKeyDown={this.handleKeyDown} onChange={this.changeSearchKeyword}></Input>}
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
@@ -158,6 +210,7 @@ export class Products extends Component<{}, ILocalState>{
                             <Header size="large">
                                 کالاهای یافت‌شده
                             </Header>
+                            {products}
                         </Segment>
                     </Grid.Column>
                 </Grid.Row>

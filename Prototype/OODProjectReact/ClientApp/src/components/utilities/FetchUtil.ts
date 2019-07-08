@@ -3,7 +3,7 @@ import { CookieUtil } from "./CookieUtil";
 
 export class FetchUtil {
     public static async fetchFromUrl(url: string): Promise<any> {
-        const response = await fetch(url, {
+        var request: RequestInit = {
             method: "GET", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -14,7 +14,8 @@ export class FetchUtil {
             },
             redirect: "follow", // manual, *follow, error
             referrer: "no-referrer" // no-referrer, *client
-        });
+        };
+        const response = await fetch(url, request);
         try {
             if (!response.ok) {
                 throw Error(response.statusText);

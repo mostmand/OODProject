@@ -114,7 +114,7 @@ export class EditProduct extends Component<IProps, ILocalState> {
             Discount: this.state.discount,
             CategoryIds: this.state.categoryIds.map(Number)
         };
-        var response = await FetchUtil.postToUrl('/api/Warehouse/edit-good', good);
+        var response = await FetchUtil.postToUrl('/api/Inventory/edit-good', good);
         this.props.history.push("/products");
     };
 
@@ -138,7 +138,7 @@ export class EditProduct extends Component<IProps, ILocalState> {
     fetchProductInfo = async () => {
         const id = this.state.id;
 
-        var response = await FetchUtil.fetchFromUrl("/api/Warehouse/get-good?id=" + id);
+        var response = await FetchUtil.fetchFromUrl("/api/Inventory/get-good?id=" + id);
         var data = await response.json();
 
         var newState: ILocalState = {
