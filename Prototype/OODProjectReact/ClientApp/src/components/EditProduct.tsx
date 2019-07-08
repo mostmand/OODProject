@@ -160,7 +160,7 @@ export class EditProduct extends Component<IProps, ILocalState> {
         return (
             <Segment color="teal">
                 <Header>
-                    افزودن کالا
+                    ویرایش کالا
                 </Header>
                 <Form>
                     <Grid>
