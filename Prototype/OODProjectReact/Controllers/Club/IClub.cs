@@ -33,10 +33,10 @@ namespace OODProjectReact.Controllers.Club
         void IncreaseSupplierBalance(int supplierId, int amount);
 
         // جزء حذفیات پیاده سازی است
-        void RegisterCustomer(Person person);
+        //void RegisterCustomer(Person person);
 
         // جزء حذفیات پیاده سازی است
-        void RegisterSupplier(Supplier customer);
+        //void RegisterSupplier(Supplier customer);
     }
 
     public class ClubRuleset
