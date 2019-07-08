@@ -7,6 +7,7 @@ import { ICategory } from "./ICategory";
 import { ITag } from "./ITag";
 import { GoodComponent } from "./ProductComponent";
 import { FetchUtil } from "./utilities/FetchUtil";
+import { GoodList } from "./GoodList";
 
 interface ILocalState {
     tags: ITag[];
@@ -14,15 +15,15 @@ interface ILocalState {
     searchKeyword: string;
 }
 
-interface IGood {
-    Id: number;
-    Sku: string;
-    Name: string;
-    Price: number;
-    Quantity: number;
-    Discount: number;
-    Explanation: string;
-    CategoryIds: number[];
+export interface IGood {
+    id: number;
+    sku: string;
+    name: string;
+    price: number;
+    quantity: number;
+    discount: number;
+    explanation: string;
+    categoryIds: number[];
 }
 
 export class Products extends Component<{}, ILocalState>{
@@ -32,7 +33,7 @@ export class Products extends Component<{}, ILocalState>{
         var data = await response.json();
 
         var newState = Object.assign(this.state) as ILocalState;
-        newState.products = data as IGood[];
+        newState.products = data.map((element: any) => element as IGood);
         this.setState(newState);
     }
     addProduct = (productId: string) => {
@@ -83,6 +84,8 @@ export class Products extends Component<{}, ILocalState>{
             products: [],
             searchKeyword: ''
         }
+
+        this.search();
     }
 
     render() {
@@ -176,16 +179,6 @@ export class Products extends Component<{}, ILocalState>{
             );
         });
 
-        var products: ReactNode[] = [];
-
-        this.state.products.forEach(good => {
-            products.push(
-                <GoodComponent name={good.Name} price={good.Price} description={good.Explanation} productId={good.Id} qunatity={good.Quantity} key={good.Id}>
-
-                </GoodComponent>
-            );
-        });
-
         return (
             <Grid>
                 <Grid.Row>
@@ -210,7 +203,7 @@ export class Products extends Component<{}, ILocalState>{
                             <Header size="large">
                                 کالاهای یافت‌شده
                             </Header>
-                            {products}
+                            {<GoodList goods={Object.assign(this.state.products)}></GoodList>}
                         </Segment>
                     </Grid.Column>
                 </Grid.Row>

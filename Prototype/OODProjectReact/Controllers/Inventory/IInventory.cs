@@ -33,7 +33,7 @@ namespace OODProjectReact.Controllers.Inventory
         public string Name { get; set; }
         public int Price { get; set; }
         public int Quantity { get; set; }
-        public int Discount { get; set; }
+        public byte Discount { get; set; }
         public string Explanation { get; set; }
 
         public List<int> CategoryIds { get; set; }
