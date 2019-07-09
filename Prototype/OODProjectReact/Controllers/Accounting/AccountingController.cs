@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using OODProjectReact.Controllers.Inventory;
 using OODProjectReact.Models;
 
 namespace OODProjectReact.Controllers.Accounting
@@ -12,20 +13,75 @@ namespace OODProjectReact.Controllers.Accounting
     {
         private readonly ood_projectContext db = new ood_projectContext();
 
-        public long CreateSellInvoice(SellInvoice sellInvoice)
+        public int CreateSellInvoice(IInvoice sellInvoice)
         {
-            db.SellInvoice.Add(sellInvoice);
+            var newInvoice = new SellInvoice();
+
+            newInvoice.CustomerId = sellInvoice.TarafHesabId;
+
+            foreach (var item in sellInvoice.Items)
+            {
+                var good = db.Good.First(x => x.Id == item.GoodId);
+                if (item.Quantity > good.Quantity)
+                {
+                    throw new Exception("Not enough quantity in the inventory");
+                }
+
+                newInvoice.Invoice = new Invoice();
+
+                newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
+                {
+                    GoodId = item.GoodId,
+                    GoodName = good.Name,
+                    Discount = good.Discount,
+                    GoodPrice = good.Price,
+                    Quantity = good.Quantity,
+                });
+            }
+
+            db.SellInvoice.Add(newInvoice);
             db.SaveChanges();
 
-            return sellInvoice.InvoiceId;
+            IInventory inventory = new InventoryController();
+            foreach (var item in sellInvoice.Items)
+            {
+                inventory.IncreaseGoodQuantity(item.GoodId, -item.Quantity);
+            }
+            return newInvoice.InvoiceId;
         }
 
-        public long CreatePurchaseInvoice(PurchaseInvoice purchaseInvoice)
+        public int CreatePurchaseInvoice(IInvoice purchaseInvoice)
         {
-            db.PurchaseInvoice.Add(purchaseInvoice);
+            var newInvoice = new PurchaseInvoice();
+
+            newInvoice.SupplierId = purchaseInvoice.TarafHesabId;
+
+            foreach (var item in purchaseInvoice.Items)
+            {
+                var good = db.Good.First(x => x.Id == item.GoodId);
+
+                newInvoice.Invoice = new Invoice();
+
+                newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
+                {
+                    GoodId = item.GoodId,
+                    GoodName = good.Name,
+                    Discount = good.Discount,
+                    GoodPrice = good.Price,
+                    Quantity = good.Quantity,
+                });
+            }
+
+            db.PurchaseInvoice.Add(newInvoice);
             db.SaveChanges();
 
-            return purchaseInvoice.InvoiceId;
+            IInventory inventory = new InventoryController();
+            foreach (var item in purchaseInvoice.Items)
+            {
+                inventory.IncreaseGoodQuantity(item.GoodId, item.Quantity);
+            }
+
+            return newInvoice.InvoiceId;
         }
 
         public void CreateCustomerPayment(CustomerPayment payment)

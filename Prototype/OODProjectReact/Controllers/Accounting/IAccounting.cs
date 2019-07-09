@@ -8,9 +8,9 @@ namespace OODProjectReact.Controllers.Accounting
 {
     interface IAccounting
     {
-        long CreateSellInvoice(SellInvoice sellInvoice);
+        int CreateSellInvoice(IInvoice sellInvoice);
 
-        long CreatePurchaseInvoice(PurchaseInvoice purchaseInvoice);
+        int CreatePurchaseInvoice(IInvoice purchaseInvoice);
 
         void CreateCustomerPayment(CustomerPayment payment);
 
@@ -29,5 +29,17 @@ namespace OODProjectReact.Controllers.Accounting
         long GetCustomerTurnOverInPeriod(int customerId, DateTime start, DateTime end);
 
         void EditDiscountOnAllGoods(byte discountPercent);
+    }
+
+    public class IInvoice
+    {
+        public List<IInvoiceItem> Items { get; set; }
+        public int TarafHesabId { get; set; }
+    }
+
+    public class IInvoiceItem
+    {
+        public int GoodId { get; set; }
+        public int Quantity { get; set; }
     }
 }
