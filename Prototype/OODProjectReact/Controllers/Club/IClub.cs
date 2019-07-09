@@ -12,9 +12,9 @@ namespace OODProjectReact.Controllers.Club
 
         void ChangeClubRules(ClubRuleset rules);
 
-        List<Customer> GetCustomersByKeyword(string keyword);
+        List<ICustomer> GetCustomersByKeyword(string keyword);
 
-        List<Supplier> GetSuppliersByKeyword(string keyword);
+        List<ISupplier> GetSuppliersByKeyword(string keyword);
 
         byte GetCustomerLevelDiscountById(int customerId);
 
@@ -33,10 +33,23 @@ namespace OODProjectReact.Controllers.Club
         void IncreaseSupplierBalance(int supplierId, int amount);
 
         // جزء حذفیات پیاده سازی است
-        //void RegisterCustomer(Person person);
+        void RegisterCustomer(Person person);
 
         // جزء حذفیات پیاده سازی است
-        //void RegisterSupplier(Supplier customer);
+        void RegisterSupplier(Supplier customer);
+    }
+
+    public class ISupplier {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
+    public class ICustomer
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
     public class ClubRuleset

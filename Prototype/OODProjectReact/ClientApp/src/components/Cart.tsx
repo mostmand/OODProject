@@ -1,7 +1,7 @@
 import React, { Component, FormEvent } from "react";
 import { IProduct } from "./IProduct";
 import SearchProduct from "./SearchProduct";
-import { Table, Image, Header, Grid, Button, Icon, Radio, CheckboxProps, Label, Divider, Input, Dropdown } from "semantic-ui-react";
+import { Table, Image, Header, Grid, Button, Icon, Radio, CheckboxProps, Label, Divider, Input, Dropdown, DropdownItemProps } from "semantic-ui-react";
 import { CartUtil } from "./utilities/CartUtil";
 import { FetchUtil } from "./utilities/FetchUtil";
 import { IGood } from "./Products";
@@ -11,9 +11,29 @@ interface IProductItem {
     quantity: number;
 }
 
+interface ISearchResult {
+    name: string;
+    id: string;
+}
+
+interface ICustomer {
+    id: number,
+    name: string;
+    phoneNumber: string;
+}
+
+interface ISupplier {
+    id: number,
+    name: string;
+    phoneNumber: string;
+}
+
 interface ILocalState {
     products: { [id: string]: IProductItem; };
-    isSaleInvoice: boolean
+    isSaleInvoice: boolean;
+    searchKeyword: string;
+    searchResult: ISearchResult[];
+    selectedCustomerId: string;
 }
 
 export class Cart extends Component<{}, ILocalState> {
@@ -44,9 +64,10 @@ export class Cart extends Component<{}, ILocalState> {
 
         CartUtil.addToCart(productId);
 
-        this.setState({
-            products: products
-        });
+        var newState = Object.assign(this.state) as ILocalState;
+        newState.products = products;
+
+        this.setState(newState);
     }
 
     decrementProductQuantity = (productId: string) => {
@@ -93,11 +114,44 @@ export class Cart extends Component<{}, ILocalState> {
         this.setState(newState);
     };
 
+    search = async () => {
+        if (this.state.isSaleInvoice) {
+            var result = await FetchUtil.fetchFromUrl('/api/Club/get-supplier?keyword=' + this.state.searchKeyword);
+            var data = await result.json() as ISupplier[];
+            var newState = Object.assign(this.state) as ILocalState;
+            var searchResult: ISearchResult[] = [];
+            data.forEach(supplier => {
+                searchResult.push({
+                    id: String(supplier.id),
+                    name: supplier.name + " شماره تلفن:‌ " + supplier.phoneNumber
+                });
+            });
+            newState.searchResult = searchResult;
+            this.setState(newState);
+        } else {
+            var result = await FetchUtil.fetchFromUrl('/api/Club/get-customer?keyword=' + this.state.searchKeyword);
+            var data = await result.json() as ICustomer[];
+            var newState = Object.assign(this.state) as ILocalState;
+            var searchResult: ISearchResult[] = [];
+            data.forEach(customer => {
+                searchResult.push({
+                    id: String(customer.id),
+                    name: customer.name + " شماره تلفن:‌ " + customer.phoneNumber
+                });
+            });
+            newState.searchResult = searchResult;
+            this.setState(newState);
+        }
+    }
+
     constructor(props: any) {
         super(props);
         this.state = {
             products: {},
-            isSaleInvoice: false
+            isSaleInvoice: false,
+            searchResult: [],
+            searchKeyword: '',
+            selectedCustomerId: "0"
         };
 
         this.getProductsInfo();
@@ -151,11 +205,35 @@ export class Cart extends Component<{}, ILocalState> {
             );
         }
 
+        var searchOptions: DropdownItemProps[] = [];
+        this.state.searchResult.forEach(element => {
+            searchOptions.push({
+                text: element.name,
+                value: element.id
+            });
+        });
+
         return (
             <Grid>
                 <Grid.Row columns={2}>
                     <Grid.Column width={11}>
-                        <Dropdown search options={[{ text: 'علی احمدی', value: '1' }]} selection icon="search" placeholder="نام مشتری"></Dropdown>
+                        <Dropdown search options={searchOptions} value={this.state.searchKeyword} scrolling selection icon="search" placeholder={this.state.isSaleInvoice ? "نام تأمین‌کننده" : "نام مشتری"}
+                            onSearchChange={
+                                (event, data) => {
+                                    var state: ILocalState = Object.assign(this.state);
+                                    state.searchKeyword = data.value as string;
+                                    this.setState(state);
+                                    this.search();
+                                }
+                            }
+                            onChange={
+                                (event, data) => {
+                                    var state: ILocalState = Object.assign(this.state);
+                                    state.selectedCustomerId = data.value as string;
+                                    this.setState(state);
+                                }
+                            }
+                        ></Dropdown>
                     </Grid.Column>
                     <Grid.Column width={5}>
                         <Button.Group>
@@ -219,5 +297,4 @@ export class Cart extends Component<{}, ILocalState> {
             </Grid >
         );
     }
-
 }

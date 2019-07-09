@@ -6,6 +6,7 @@ using OODProjectReact.Models;
 
 namespace OODProjectReact.Controllers.Accounting
 {
+    [Route("api/[controller]")]
     public class AccountingController : IAccounting
     {
         private readonly ood_projectContext db = new ood_projectContext();
