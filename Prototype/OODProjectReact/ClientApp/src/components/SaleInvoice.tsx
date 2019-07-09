@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Image } from "semantic-ui-react";
+import { Card, Image, Table } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import queryString from "query-string"
 import { number } from "prop-types";
@@ -58,10 +58,65 @@ export class SaleInvoice extends Component<{}, ILocalState> {
     }
 
     public render() {
-        return (
-            <div>
+        var items: any[] = [];
 
-            </div>
+        this.state.details.items.forEach(item => {
+            items.push(
+                <Table.Row>
+                    <Table.Cell>
+                        {item.goodName}
+                    </Table.Cell>
+                    <Table.Cell>
+                        {item.quantity}
+                    </Table.Cell>
+                    <Table.Cell>
+                        {item.totalPrice} تومان
+                    </Table.Cell>
+                </Table.Row>
+            )
+        });
+
+        return (
+            <Table>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>
+                            نام کالا
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                            تعداد
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
+                            قیمت کل
+                        </Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                    {items}
+                    <Table.Row>
+                        <Table.Cell>
+                            مجموع
+                        </Table.Cell>
+                        <Table.Cell>
+                            
+                        </Table.Cell>
+                        <Table.Cell>
+                            {this.state.details.totalPrice} تومان
+                        </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                        <Table.Cell>
+                            باقی‌مانده
+                        </Table.Cell>
+                        <Table.Cell>
+                            
+                        </Table.Cell>
+                        <Table.Cell>
+                            {this.state.details.remaining} تومان
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Body>
+            </Table>
         );
     }
 }

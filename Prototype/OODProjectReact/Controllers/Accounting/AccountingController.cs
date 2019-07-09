@@ -25,10 +25,9 @@ namespace OODProjectReact.Controllers.Accounting
             newInvoice.Invoice = new Invoice();
             newInvoice.Invoice.User = user;
 
-            // TODO Set invoice fee
-
             newInvoice.CustomerId = sellInvoice.TarafHesabId;
 
+            var fee = 0;
             foreach (var item in sellInvoice.Items)
             {
                 var good = db.Good.First(x => x.Id == item.GoodId);
@@ -36,6 +35,9 @@ namespace OODProjectReact.Controllers.Accounting
                 {
                     throw new Exception("Not enough quantity in the inventory");
                 }
+
+                var price = Convert.ToInt32(good.Price * (100 - good.Discount) / 100);
+                fee += price;
 
                 newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
                 {
@@ -46,6 +48,8 @@ namespace OODProjectReact.Controllers.Accounting
                     Quantity = good.Quantity,
                 });
             }
+            // TODO Calculate discount;
+            newInvoice.Invoice.Fee = fee;
 
             db.SellInvoice.Add(newInvoice);
             db.SaveChanges();
@@ -68,15 +72,17 @@ namespace OODProjectReact.Controllers.Accounting
             newInvoice.Invoice = new Invoice();
             newInvoice.Invoice.User = user;
 
-            // TODO Set invoice fee
-
             newInvoice.SupplierId = purchaseInvoice.TarafHesabId;
+
+            var fee = 0;
 
             newInvoice.Invoice = new Invoice();
             foreach (var item in purchaseInvoice.Items)
             {
                 var good = db.Good.First(x => x.Id == item.GoodId);
 
+                var price = Convert.ToInt32(good.Price * (100 - good.Discount) / 100);
+                fee += price;
 
                 newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
                 {
@@ -87,6 +93,9 @@ namespace OODProjectReact.Controllers.Accounting
                     Quantity = good.Quantity,
                 });
             }
+
+            // TODO Calculate discount
+            newInvoice.Invoice.Fee = fee;
 
             db.PurchaseInvoice.Add(newInvoice);
             db.SaveChanges();
