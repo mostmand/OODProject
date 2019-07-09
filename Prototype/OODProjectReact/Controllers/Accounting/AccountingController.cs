@@ -23,7 +23,7 @@ namespace OODProjectReact.Controllers.Accounting
 
             var user = this.Request.GetMyUser();
             newInvoice.Invoice = new Invoice();
-            newInvoice.Invoice.User = user;
+            newInvoice.Invoice.UserId = user.Id;
 
             newInvoice.CustomerId = sellInvoice.TarafHesabId;
 
@@ -39,14 +39,17 @@ namespace OODProjectReact.Controllers.Accounting
                 var price = Convert.ToInt32(good.Price * (100 - good.Discount) / 100);
                 fee += price;
 
-                newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
+                var invoiceItem = new InvoiceItem
                 {
                     GoodId = item.GoodId,
                     GoodName = good.Name,
                     Discount = good.Discount,
                     GoodPrice = good.Price,
                     Quantity = good.Quantity,
-                });
+                };
+
+                invoiceItem.TotalPrice = invoiceItem.GetTotalPrice();
+                newInvoice.Invoice.InvoiceItem.Add(invoiceItem);
             }
             // TODO Calculate discount;
             newInvoice.Invoice.Fee = fee;
@@ -70,7 +73,7 @@ namespace OODProjectReact.Controllers.Accounting
 
             var user = this.Request.GetMyUser();
             newInvoice.Invoice = new Invoice();
-            newInvoice.Invoice.User = user;
+            newInvoice.Invoice.UserId = user.Id;
 
             newInvoice.SupplierId = purchaseInvoice.TarafHesabId;
 
@@ -83,14 +86,17 @@ namespace OODProjectReact.Controllers.Accounting
                 var price = Convert.ToInt32(good.Price * (100 - good.Discount) / 100);
                 fee += price;
 
-                newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
+                var invoiceItem = new InvoiceItem
                 {
                     GoodId = item.GoodId,
                     GoodName = good.Name,
                     Discount = good.Discount,
                     GoodPrice = good.Price,
                     Quantity = good.Quantity,
-                });
+                };
+
+                invoiceItem.TotalPrice = invoiceItem.GetTotalPrice();
+                newInvoice.Invoice.InvoiceItem.Add(invoiceItem);
             }
 
             // TODO Calculate discount
@@ -172,7 +178,7 @@ namespace OODProjectReact.Controllers.Accounting
                 {
                     GoodName = x.GoodName,
                     Quantity = x.Quantity,
-                    TotalPrice = x.TotalPrice
+                    TotalPrice = x.GetTotalPrice()
                 }).ToList(),
                 TotalPrice = purchaseInvoice.Invoice.Fee,
                 Payments = payments,
@@ -202,7 +208,7 @@ namespace OODProjectReact.Controllers.Accounting
                 {
                     GoodName = x.GoodName,
                     Quantity = x.Quantity,
-                    TotalPrice = x.TotalPrice
+                    TotalPrice = x.GetTotalPrice()
                 }).ToList(),
                 TotalPrice = sellInvoice.Invoice.Fee,
                 Payments = payments,

@@ -12,15 +12,13 @@ namespace OODProjectReact.Models
         public int GoodPrice { get; set; }
         public int Quantity { get; set; }
         public int Discount { get; set; }
-        public int TotalPrice
+        public int TotalPrice { get; set; }
+        public int GetTotalPrice()
         {
-            get
-            {
-                if (Discount != 0)
-                    return Quantity * GoodPrice;
-                else
-                    return Convert.ToInt32(Quantity * GoodPrice * (100.0 - Discount) / 100.0);
-            }
+            if (Discount != 0)
+                return Quantity * GoodPrice;
+            else
+                return Convert.ToInt32(Quantity * GoodPrice * (100.0 - Discount) / 100.0);
         }
 
         public virtual Good Good { get; set; }

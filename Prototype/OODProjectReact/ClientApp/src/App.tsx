@@ -16,6 +16,8 @@ import { AddCashier } from './AddCashier';
 import { AddCustomer } from './AddCustomer';
 import { AddSupplier } from './components/AddSupplier';
 import { EditProduct } from './components/EditProduct';
+import { SaleInvoice } from './components/SaleInvoice';
+import { PurchaseInvoice } from './components/PurchaseInvoice';
 
 interface ILocalState {
   isLoggedIn: boolean;
@@ -86,6 +88,8 @@ export default class App extends Component<IProps, ILocalState> {
         <Route path="/add-customer" component={AddCustomer} />
         <Route path="/add-supplier" component={AddSupplier} />
         <Route path="/product" component={EditProduct} />
+        <Route path="/sale-invoice" component={SaleInvoice} />
+        <Route path="/purchase-invoice" component={PurchaseInvoice} />
       </Layout>
     );
   }

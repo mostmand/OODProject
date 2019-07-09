@@ -26,7 +26,7 @@ interface IPurchaseInvoiceDetails {
 
 export class PurchaseInvoice extends Component<{}, ILocalState> {
     fetchInvoiceInfo = async () => {
-        var response = await FetchUtil.fetchFromUrl("/get-purchase-invoice?id=" + this.state.id);
+        var response = await FetchUtil.fetchFromUrl("/api/Accounting/get-purchase-invoice?id=" + this.state.id);
         var data = await response.json() as IPurchaseInvoiceDetails;
 
         var newState = Object.assign(this.state) as ILocalState;
