@@ -14,12 +14,19 @@ namespace OODProjectReact.Controllers.Report
 
     public class Report<T> where T : IReportItem
     {
+        public Report(DateTime startDate, DateTime endDate, DateTime generateDate)
+        {
+            StartDate = startDate;
+            EndDate = endDate;
+            GenerateDate = generateDate;
+        }
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
         public DateTime GenerateDate { get; set; }
 
-        List<T> ReportItems { get; set; }
+        public List<T> ReportItems { get; set; } = new List<T>();
     }
 
     public interface IReportItem
