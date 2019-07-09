@@ -15,7 +15,7 @@ export class Invoices extends Component<{}, ILocalState>{
         this.loadSaleInvoices();
     }
     loadSaleInvoices = async () => {
-        var response = await FetchUtil.fetchFromUrl("/api/Accounting/get-purchase-invoices?from=0&size=100");
+        var response = await FetchUtil.fetchFromUrl("/api/Accounting/get-sale-invoices?from=0&size=100");
         var data = await response.json() as IInvoice[];
         data.forEach(element => {
             element.isSaleInvoice = true;
@@ -26,7 +26,7 @@ export class Invoices extends Component<{}, ILocalState>{
         this.setState(newState);
     }
     loadPurchaseInvoices = async () => {
-        var response = await FetchUtil.fetchFromUrl("/api/Accounting/get-sale-invoices?from=0&size=100");
+        var response = await FetchUtil.fetchFromUrl("/api/Accounting/get-purchase-invoices?from=0&size=100");
         var data = await response.json() as IInvoice[];
         data.forEach(element => {
             element.isSaleInvoice = false;
