@@ -122,9 +122,12 @@ namespace OODProjectReact.Controllers.Accounting
             throw new NotImplementedException();
         }
 
-        public long GetCustomerTurnOverInPeriod(int customerId, DateTime start, DateTime end)
+        public (long money, int invoiceCount) GetCustomerTurnOverInPeriod(int customerId, DateTime start, DateTime end)
         {
-            throw new NotImplementedException();
+            var query = db.SellInvoice.Where(x => x.CustomerId == customerId && (start <= x.Invoice.Date && x.Invoice.Date <= end));
+
+            (long money, int invoiceCount) result = (query.Sum(x => x.Invoice.Fee), query.Count());
+            return result;
         }
 
         [HttpGet("get-purchase-invoice")]
