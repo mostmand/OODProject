@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Image } from "semantic-ui-react";
+import { Card, Image, Segment } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import queryString from "query-string"
 import { number } from "prop-types";
@@ -60,6 +60,9 @@ export class PurchaseInvoice extends Component<{}, ILocalState> {
     public render() {
         return (
             <div>
+                <Segment>
+                    
+                </Segment>
 
             </div>
         );
