@@ -35,6 +35,8 @@ namespace OODProjectReact.Controllers.Report
 
         public Report<GoodQuantityReportItem> GetGoodQuantityReport(DateTime start, DateTime end)
         {
+            var result = new Report<CustomerInvoicesReportItem>(start, end, DateTime.Now);
+
             throw new NotImplementedException();
         }
     }
