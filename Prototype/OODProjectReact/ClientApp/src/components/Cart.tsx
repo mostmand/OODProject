@@ -36,12 +36,69 @@ interface ILocalState {
     selectedCustomerId: string;
 }
 
-export class Cart extends Component<{}, ILocalState> {
+interface IInvoice {
+    items: IInvoiceItem[];
+    tarafHesabId: number;
+}
+
+interface IInvoiceItem {
+    goodId: number;
+    quantity: number;
+}
+
+interface IProps {
+    history: any;
+}
+
+export class Cart extends Component<IProps, ILocalState> {
+    createPurchaseInvoice = async () => {
+        var invoice: IInvoice = {
+            items: [],
+            tarafHesabId: parseInt(this.state.selectedCustomerId)
+        };
+        for (const product of Object.values(this.state.products)) {
+            invoice.items.push({
+                goodId: product.product.id,
+                quantity: product.quantity
+            })
+        }
+        var response = await FetchUtil.postToUrl('/api/Accounting/create-purchase-invoice', invoice);
+        var invoiceId: number = await response.json();
+
+        this.props.history.push('/purchase-invoice?id=' + invoiceId);
+    }
+    createSaleInvoice = async () => {
+        var invoice: IInvoice = {
+            items: [],
+            tarafHesabId: parseInt(this.state.selectedCustomerId)
+        };
+        for (const product of Object.values(this.state.products)) {
+            invoice.items.push({
+                goodId: product.product.id,
+                quantity: product.quantity
+            })
+        }
+        var response = await FetchUtil.postToUrl('/api/Accounting/create-sale-invoice', invoice);
+        var invoiceId: number = await response.json();
+
+        this.props.history.push('/sale-invoice?id=' + invoiceId);
+    }
     getProductInfo = async (productId: string) => {
         const response = await FetchUtil.fetchFromUrl('/api/Inventory/get-good?id=' + productId)
         const good = (await response.json()) as IGood;
         return good;
     }
+
+    createInvoice = (event: any, data: any) => {
+        if (this.state.selectedCustomerId === "0") {
+            return;
+        }
+        if (this.state.isSaleInvoice) {
+            this.createSaleInvoice();
+        } else {
+            this.createPurchaseInvoice();
+        }
+    };
 
     async getCart(): Promise<{ [id: string]: IProductItem; }> {
         const storedCart = CartUtil.getCart();
@@ -291,7 +348,7 @@ export class Cart extends Component<{}, ILocalState> {
 
                 <Grid.Row>
                     <Grid.Column>
-                        <Button color="purple" fluid>صدور فاکتور</Button>
+                        <Button color="purple" fluid onClick={this.createInvoice}>صدور فاکتور</Button>
                     </Grid.Column>
                 </Grid.Row>
             </Grid >

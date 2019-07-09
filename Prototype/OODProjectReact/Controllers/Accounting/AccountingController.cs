@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OODProjectReact.Controllers.Inventory;
+using OODProjectReact.ExtensionMethods;
+using OODProjectReact.Filters;
 using OODProjectReact.Models;
 
 namespace OODProjectReact.Controllers.Accounting
@@ -13,9 +15,17 @@ namespace OODProjectReact.Controllers.Accounting
     {
         private readonly ood_projectContext db = new ood_projectContext();
 
-        public int CreateSellInvoice(IInvoice sellInvoice)
+        [CheckAuthentication]
+        [HttpPost("create-sale-invoice")]
+        public int CreateSellInvoice([FromBody]IInvoice sellInvoice)
         {
             var newInvoice = new SellInvoice();
+
+            var user = this.Request.GetMyUser();
+            newInvoice.Invoice = new Invoice();
+            newInvoice.Invoice.User = user;
+
+            // TODO Set invoice fee
 
             newInvoice.CustomerId = sellInvoice.TarafHesabId;
 
@@ -26,8 +36,6 @@ namespace OODProjectReact.Controllers.Accounting
                 {
                     throw new Exception("Not enough quantity in the inventory");
                 }
-
-                newInvoice.Invoice = new Invoice();
 
                 newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
                 {
@@ -50,17 +58,25 @@ namespace OODProjectReact.Controllers.Accounting
             return newInvoice.InvoiceId;
         }
 
-        public int CreatePurchaseInvoice(IInvoice purchaseInvoice)
+        [CheckAuthentication]
+        [HttpPost("create-purchase-invoice")]
+        public int CreatePurchaseInvoice([FromBody]IInvoice purchaseInvoice)
         {
             var newInvoice = new PurchaseInvoice();
 
+            var user = this.Request.GetMyUser();
+            newInvoice.Invoice = new Invoice();
+            newInvoice.Invoice.User = user;
+
+            // TODO Set invoice fee
+
             newInvoice.SupplierId = purchaseInvoice.TarafHesabId;
 
+            newInvoice.Invoice = new Invoice();
             foreach (var item in purchaseInvoice.Items)
             {
                 var good = db.Good.First(x => x.Id == item.GoodId);
 
-                newInvoice.Invoice = new Invoice();
 
                 newInvoice.Invoice.InvoiceItem.Add(new InvoiceItem
                 {
@@ -116,7 +132,8 @@ namespace OODProjectReact.Controllers.Accounting
             return db.PurchaseInvoice.First(x => x.InvoiceId == Id);
         }
 
-        public List<PurchaseInvoice> GetPurchaseInvoices(int from, int size)
+        [HttpGet("get-purchase-invoices")]
+        public List<PurchaseInvoice> GetPurchaseInvoices([FromQuery]int from, [FromQuery]int size)
         {
             return db.PurchaseInvoice.Skip(from).Take(size).ToList();
         }
@@ -126,7 +143,8 @@ namespace OODProjectReact.Controllers.Accounting
             return db.SellInvoice.First(x => x.InvoiceId == Id);
         }
 
-        public List<SellInvoice> GetSellInvoices(int from, int size)
+        [HttpGet("get-sale-invoices")]
+        public List<SellInvoice> GetSellInvoices([FromQuery]int from, [FromQuery]int size)
         {
             return db.SellInvoice.Skip(from).Take(size).ToList();
         }

@@ -8,6 +8,7 @@ export interface IInvoice {
     fee: number;
     creatorUsername: string;
     personName: string;
+    isSaleInvoice: boolean;
 }
 
 interface IProps {
@@ -82,7 +83,7 @@ class InvoiceSummary extends Component<IInvoice> {
                     {this.props.creatorUsername}
                 </Table.Cell>
                 <Table.Cell>
-                    <Button color="teal" animated as={Link} to={'/invoice?id=' + this.props.id}>
+                    <Button color="teal" animated as={Link} to={this.props.isSaleInvoice ? '/sale-invoice?id=' : '/purchase-invoice?id=' + this.props.id}>
                         <Button.Content visible>مشاهده</Button.Content>
                         <Button.Content hidden>
                             <Icon name='arrow left' />

@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import { Segment, Table, Header, Grid } from "semantic-ui-react";
 import { InvoiceList, IInvoice } from "./InvoiceList";
 
+
+interface ILocalState {
+    sellInvoices: IInvoice[];
+    purchaseInvoices: IInvoice[];
+}
+
 export class Invoices extends Component<{}, {}>{
     constructor(props: any) {
         super(props);
