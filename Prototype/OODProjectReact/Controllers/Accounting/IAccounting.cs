@@ -20,9 +20,9 @@ namespace OODProjectReact.Controllers.Accounting
 
         List<PurchaseInvoice> GetPurchaseInvoices(int from, int size);
 
-        SellInvoice GetSellInvoiceById(int Id);
+        ISaleInvoiceDetails GetSaleInvoiceById(int Id);
 
-        PurchaseInvoice GetPurchaseInvoiceById(int Id);
+        IPurchaseInvoiceDetails GetPurchaseInvoiceById(int Id);
 
         long GetCustomerTurnOver(int customerId);
 
@@ -42,4 +42,39 @@ namespace OODProjectReact.Controllers.Accounting
         public int GoodId { get; set; }
         public int Quantity { get; set; }
     }
+
+    public class IInvoiceSummary
+    {
+        public int Id { get; set; }
+        public string CreatorUserName { get; set; }
+        public string PersonName { get; set; }
+        public string Date { get; set; }
+        public int Fee { get; set; }
+    }
+
+    public class IInvoiceItemDetails
+    {
+        public string GoodName { get; set; }
+        public int Quantity { get; set; }
+        public int TotalPrice { get; set; }
+    }
+
+    public class IPurchaseInvoiceDetails
+    {
+        public string SupplierName { get; set; }
+        public List<IInvoiceItemDetails> Items { get; set; }
+        public int TotalPrice { get; set; }
+        public int Remaining { get; set; }
+        public List<SupplierPayment> Payments { get; set; }
+    }
+
+    public class ISaleInvoiceDetails
+    {
+        public string CustomerName { get; set; }
+        public List<IInvoiceItemDetails> Items { get; set; }
+        public int TotalPrice { get; set; }
+        public int Remaining { get; set; }
+        public List<CustomerPayment> Payments { get; set; }
+    }
+
 }

@@ -127,9 +127,28 @@ namespace OODProjectReact.Controllers.Accounting
             throw new NotImplementedException();
         }
 
-        public PurchaseInvoice GetPurchaseInvoiceById(int Id)
+        [HttpGet("get-purchase-invoice")]
+        public IPurchaseInvoiceDetails GetPurchaseInvoiceById([FromQuery]int Id)
         {
-            return db.PurchaseInvoice.First(x => x.InvoiceId == Id);
+            var purchaseInvoice = db.PurchaseInvoice.First(x => x.InvoiceId == Id);
+
+            var person = purchaseInvoice.Supplier.Person;
+
+            var payments = purchaseInvoice.SupplierPayment.ToList();
+
+            return new IPurchaseInvoiceDetails
+            {
+                SupplierName = person.Name + " " + person.LastName,
+                Items = purchaseInvoice.Invoice.InvoiceItem.Select(x => new IInvoiceItemDetails
+                {
+                    GoodName = x.GoodName,
+                    Quantity = x.Quantity,
+                    TotalPrice = x.TotalPrice
+                }).ToList(),
+                TotalPrice = purchaseInvoice.Invoice.Fee,
+                Payments = payments,
+                Remaining = purchaseInvoice.Invoice.Fee - payments.Sum(x => x.Payment.Amount)
+            };
         }
 
         [HttpGet("get-purchase-invoices")]
@@ -138,9 +157,28 @@ namespace OODProjectReact.Controllers.Accounting
             return db.PurchaseInvoice.Skip(from).Take(size).ToList();
         }
 
-        public SellInvoice GetSellInvoiceById(int Id)
+        [HttpGet("get-sale-invoice")]
+        public ISaleInvoiceDetails GetSaleInvoiceById([FromQuery]int Id)
         {
-            return db.SellInvoice.First(x => x.InvoiceId == Id);
+            var sellInvoice = db.SellInvoice.First(x => x.InvoiceId == Id);
+
+            var person = sellInvoice.Customer.Person;
+
+            var payments = sellInvoice.CustomerPayment.ToList();
+
+            return new ISaleInvoiceDetails
+            {
+                CustomerName = person.Name + " " + person.LastName,
+                Items = sellInvoice.Invoice.InvoiceItem.Select(x => new IInvoiceItemDetails
+                {
+                    GoodName = x.GoodName,
+                    Quantity = x.Quantity,
+                    TotalPrice = x.TotalPrice
+                }).ToList(),
+                TotalPrice = sellInvoice.Invoice.Fee,
+                Payments = payments,
+                Remaining = sellInvoice.Invoice.Fee - payments.Sum(x => x.Payment.Amount)
+            };
         }
 
         [HttpGet("get-sale-invoices")]

@@ -1,31 +1,53 @@
 import React, { Component } from "react";
 import { Segment, Table, Header, Grid } from "semantic-ui-react";
 import { InvoiceList, IInvoice } from "./InvoiceList";
+import { FetchUtil } from "./utilities/FetchUtil";
 
 
 interface ILocalState {
-    sellInvoices: IInvoice[];
+    saleInvoices: IInvoice[];
     purchaseInvoices: IInvoice[];
 }
 
-export class Invoices extends Component<{}, {}>{
+export class Invoices extends Component<{}, ILocalState>{
+    loadInvoices = () => {
+        this.loadPurchaseInvoices();
+        this.loadSaleInvoices();
+    }
+    loadSaleInvoices = async () => {
+        var response = await FetchUtil.fetchFromUrl("/api/Accounting/get-purchase-invoices?from=0&size=100");
+        var data = await response.json() as IInvoice[];
+        data.forEach(element => {
+            element.isSaleInvoice = true;
+        });
+        
+        var newState = Object.assign(this.state) as ILocalState;
+        newState.saleInvoices = data;
+        this.setState(newState);
+    }
+    loadPurchaseInvoices = async () => {
+        var response = await FetchUtil.fetchFromUrl("/api/Accounting/get-sale-invoices?from=0&size=100");
+        var data = await response.json() as IInvoice[];
+        data.forEach(element => {
+            element.isSaleInvoice = false;
+        });
+        
+        var newState = Object.assign(this.state) as ILocalState;
+        newState.purchaseInvoices = data;
+        this.setState(newState);
+    }
     constructor(props: any) {
         super(props);
+
+        this.state = {
+            purchaseInvoices: [],
+            saleInvoices: []
+        }
+
+        this.loadInvoices();
     }
 
     render() {
-        var sellInvoices: IInvoice[] = [
-            {
-                id: '1',
-                creatorUsername: 'مدیر',
-                personName: 'احمد',
-                date: '1398/02/24',
-                fee: 450000
-            }
-        ];
-
-        var purchaseInvoices: IInvoice[] = [];
-
         return (
             <Segment color="teal">
                 <Header>
@@ -38,7 +60,7 @@ export class Invoices extends Component<{}, {}>{
                             <Header>
                                 فاکتورهای خرید
                             </Header>
-                            <InvoiceList invoices={purchaseInvoices}>
+                            <InvoiceList invoices={this.state.purchaseInvoices}>
 
                             </InvoiceList>
                         </Grid.Column>
@@ -47,7 +69,7 @@ export class Invoices extends Component<{}, {}>{
                             <Header>
                                 فاکتورهای فروش
                             </Header>
-                            <InvoiceList invoices={sellInvoices}>
+                            <InvoiceList invoices={this.state.saleInvoices}>
 
                             </InvoiceList>
                         </Grid.Column>

@@ -172,7 +172,7 @@ export class Cart extends Component<IProps, ILocalState> {
     };
 
     search = async () => {
-        if (this.state.isSaleInvoice) {
+        if (!this.state.isSaleInvoice) {
             var result = await FetchUtil.fetchFromUrl('/api/Club/get-supplier?keyword=' + this.state.searchKeyword);
             var data = await result.json() as ISupplier[];
             var newState = Object.assign(this.state) as ILocalState;
@@ -274,7 +274,7 @@ export class Cart extends Component<IProps, ILocalState> {
             <Grid>
                 <Grid.Row columns={2}>
                     <Grid.Column width={11}>
-                        <Dropdown search options={searchOptions} value={this.state.searchKeyword} scrolling selection icon="search" placeholder={this.state.isSaleInvoice ? "نام تأمین‌کننده" : "نام مشتری"}
+                        <Dropdown search options={searchOptions} value={this.state.searchKeyword} scrolling selection icon="search" placeholder={!this.state.isSaleInvoice ? "نام تأمین‌کننده" : "نام مشتری"}
                             onSearchChange={
                                 (event, data) => {
                                     var state: ILocalState = Object.assign(this.state);
