@@ -76,7 +76,6 @@ namespace OODProjectReact.Controllers.Accounting
 
             var fee = 0;
 
-            newInvoice.Invoice = new Invoice();
             foreach (var item in purchaseInvoice.Items)
             {
                 var good = db.Good.First(x => x.Id == item.GoodId);
@@ -109,15 +108,33 @@ namespace OODProjectReact.Controllers.Accounting
             return newInvoice.InvoiceId;
         }
 
-        public void CreateCustomerPayment(CustomerPayment payment)
+        public void CreateCustomerPayment(IPayment payment)
         {
-            db.CustomerPayment.Add(payment);
+            db.CustomerPayment.Add(new CustomerPayment()
+            {
+                SellInvoiceId = payment.InvoiceId,
+                Payment = new Payment()
+                {
+                    Date = DateTime.Now,
+                    Amount = payment.Amount,
+                }
+            });
+
             db.SaveChanges();
         }
 
-        public void CreateSupplierPayment(SupplierPayment payment)
+        public void CreateSupplierPayment(IPayment payment)
         {
-            db.SupplierPayment.Add(payment);
+            db.SupplierPayment.Add(new SupplierPayment()
+            {
+                PurchaseInvoiceId = payment.InvoiceId,
+                Payment = new Payment()
+                {
+                    Date = DateTime.Now,
+                    Amount = payment.Amount,
+                }
+            });
+
             db.SaveChanges();
         }
 
