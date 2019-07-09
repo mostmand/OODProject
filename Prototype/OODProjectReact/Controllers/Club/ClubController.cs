@@ -41,7 +41,7 @@ namespace OODProjectReact.Controllers.Club
         }
 
         [HttpGet("get-supplier")]
-        public List<ISupplier> GetSuppliersByKeyword([FromBody]string keyword)
+        public List<ISupplier> GetSuppliersByKeyword([FromQuery]string keyword)
         {
             return db.Supplier.Where(x => x.Person.Name.Contains(keyword) || x.Person.LastName.Contains(keyword))
                 .Select(x => new ISupplier
