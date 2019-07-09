@@ -12,9 +12,9 @@ namespace OODProjectReact.Controllers.Accounting
 
         int CreatePurchaseInvoice(IInvoice purchaseInvoice);
 
-        void CreateCustomerPayment(CustomerPayment payment);
+        void CreateCustomerPayment(IPayment payment);
 
-        void CreateSupplierPayment(SupplierPayment payment);
+        void CreateSupplierPayment(IPayment payment);
 
         List<SellInvoice> GetSellInvoices(int from, int size);
 
@@ -29,6 +29,15 @@ namespace OODProjectReact.Controllers.Accounting
         (long money, int invoiceCount) GetCustomerTurnOverInPeriod(int customerId, DateTime start, DateTime end);
 
         void EditDiscountOnAllGoods(byte discountPercent);
+    }
+
+    public class IPayment
+    {
+        public int Id { get; set; }
+
+        public int Amount { get; set; }
+
+        public int InvoiceId { get; set; }
     }
 
     public class IInvoice
