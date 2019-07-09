@@ -107,12 +107,17 @@ export class Cart extends Component<{}, ILocalState> {
         const products = this.state.products;
         const items: any[] = [];
 
+        var sum = 0;
+
         for (const product of Object.values(products)) {
             const minusIcon = product.quantity > 1 ?
                 <Button icon circular onClick={() => this.decrementProductQuantity(String(product.product.id))}>
                     <Icon name="minus circle" color="red" size="large"></Icon>
                 </Button>
                 : [];
+
+            const thisProductPrice = Math.trunc(product.product.price * (100 - product.product.discount) / 100) * product.quantity;
+            sum += thisProductPrice;
             items.push(
                 <Table.Row>
                     <Table.Cell>
@@ -133,6 +138,9 @@ export class Cart extends Component<{}, ILocalState> {
                     </Table.Cell>
                     <Table.Cell>
                         {product.product.discount + " %"}
+                    </Table.Cell>
+                    <Table.Cell>
+                        {thisProductPrice + " تومان"}
                     </Table.Cell>
                     <Table.Cell>
                         <Button icon circular onClick={() => this.removeProduct(String(product.product.id))}>
@@ -167,26 +175,40 @@ export class Cart extends Component<{}, ILocalState> {
                                 <Table.HeaderCell>شناسه</Table.HeaderCell>
                                 <Table.HeaderCell>نام کالا</Table.HeaderCell>
                                 <Table.HeaderCell>تعداد</Table.HeaderCell>
-                                <Table.HeaderCell>قیمت</Table.HeaderCell>
+                                <Table.HeaderCell>قیمت واحد</Table.HeaderCell>
                                 <Table.HeaderCell>تخفیف</Table.HeaderCell>
+                                <Table.HeaderCell>قیمت کل</Table.HeaderCell>
                                 <Table.HeaderCell></Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
                             {items}
+
+                            <Table.Row>
+                                <Table.Cell>
+                                    مجموع
+                                </Table.Cell>
+                                <Table.Cell>
+
+                                </Table.Cell>
+                                <Table.Cell>
+
+                                </Table.Cell>
+                                <Table.Cell>
+
+                                </Table.Cell>
+                                <Table.Cell>
+
+                                </Table.Cell>
+                                <Table.Cell>
+                                    {sum + " تومان"}
+                                </Table.Cell>
+                                <Table.Cell>
+
+                                </Table.Cell>
+                            </Table.Row>
                         </Table.Body>
                     </Table>
-                </Grid.Row>
-
-
-                <Divider>
-
-                </Divider>
-
-                <Grid.Row>
-                    <Grid.Column>
-                        مجموع 82000 تومان
-                    </Grid.Column>
                 </Grid.Row>
 
                 <Grid.Row>
