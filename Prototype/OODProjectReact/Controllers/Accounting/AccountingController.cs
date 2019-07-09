@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using OODProjectReact.Models;
 
 namespace OODProjectReact.Controllers.Accounting
 {
     [Route("api/[controller]")]
-    public class AccountingController : IAccounting
+    public class AccountingController : ControllerBase, IAccounting
     {
         private readonly ood_projectContext db = new ood_projectContext();
 
