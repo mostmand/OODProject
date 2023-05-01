@@ -25,7 +25,7 @@
     "@types/react-router-dom": "^4.3.3",
     "ajv": "^6.0.0",
     "cross-env": "^5.2.0",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^5.0.1",
     "semantic-ui": "^2.4.2",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
